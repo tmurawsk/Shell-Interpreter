@@ -4,23 +4,24 @@
 #include <string>
 #include <iostream>
 #include <unistd.h>
+#include <vector>
 
 #include "Environment.h"
 #include "Exceptions/ExitException.h"
+#include "Parser/Parser.h"
 
 using namespace Environment;
 class Terminal{
 public:
     void start(){
-        while(true){
+        Parser parser;
+        while(!parser.wasExit()){
             try{
                 std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
                 std::getline(std::cin,terminalInput);
-                ///Parser
-                ///tymczasowe wyjscie
-                if(terminalInput == "exit")
-                    throw ExitException();
-                ///
+                std::vector<Token> tokens = parser.parseLine(terminalInput);
+                parser.parseAndExecuteTokens(tokens);
+
             }
             catch (ExitException& e){
                 std::cout << e.what() << "\n";
@@ -32,6 +33,9 @@ public:
                 std::cout << e.what();
             }
         }
+        //exit typed
+        std::cin.get();
+        system("clear");
     }
 
     static Terminal& create(){
