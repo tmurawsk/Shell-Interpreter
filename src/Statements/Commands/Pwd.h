@@ -10,7 +10,13 @@
 namespace Commands {
     class Pwd: public Statement {
     public:
-        void execute() {};
+        void execute() override{
+            std::cout << "pwd: ";
+            for(auto & I : arguments){
+                std::cout << I << " ";
+            }
+            std::cout << "\n";
+        };
     };
 }
 #endif //SHELL_INTERPRETER_PWD_H

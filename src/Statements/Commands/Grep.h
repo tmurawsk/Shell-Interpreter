@@ -10,7 +10,13 @@
 namespace Commands {
     class Grep: public Statement {
     public:
-        void execute() {};
+        void execute() override{
+            std::cout << "grep: ";
+            for(auto & I : arguments){
+                std::cout << I << " ";
+            }
+            std::cout << "\n";
+        };
     };
 }
 #endif //SHELL_INTERPRETER_GREP_H

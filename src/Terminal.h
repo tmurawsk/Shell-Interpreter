@@ -7,15 +7,15 @@
 #include <vector>
 
 #include "Environment.h"
-#include "Exceptions/ExitException.h"
+#include "Exceptions.h"
 #include "Parser/Parser.h"
 
 using namespace Environment;
 class Terminal{
 public:
     void start(){
-        Parser parser;
-        while(!parser.wasExit()){
+
+        while(true){
             try{
                 std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
                 std::getline(std::cin,terminalInput);
@@ -23,19 +23,14 @@ public:
                 parser.parseAndExecuteTokens(tokens);
 
             }
-            catch (ExitException& e){
-                std::cout << e.what() << "\n";
-                std::cin.get();
-                system("clear");
+            catch (ExitException & e)
+            {
                 break;
             }
-            catch (std::exception& e){
-                std::cout << e.what();
+            catch (std::exception & e){
+                    std::cout << e.what() << std::endl;
             }
         }
-        //exit typed
-        std::cin.get();
-        system("clear");
     }
 
     static Terminal& create(){
@@ -51,6 +46,8 @@ private:
         chdir(getpwuid(getuid())->pw_dir);
         system("clear");
     }
+
+    Parser parser;
 
     std::string terminalInput;
 };

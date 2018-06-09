@@ -10,7 +10,13 @@
 namespace Commands {
     class Ls: public Statement {
     public:
-        void execute() {};
+        void execute() override{
+            std::cout << "ls: ";
+            for(auto & I : arguments){
+                std::cout << I << " ";
+            }
+            std::cout << "\n";
+        };
     };
 }
 #endif //SHELL_INTERPRETER_LS_H

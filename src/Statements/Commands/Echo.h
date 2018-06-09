@@ -10,8 +10,12 @@
 namespace Commands {
     class Echo: public Statement {
     public:
-        void execute() {
-            std::cout << "ECHO command" << std::endl;
+        void execute() override{
+            std::cout << "echo: ";
+            for(auto & I : arguments){
+                std::cout << I << " ";
+            }
+            std::cout << "\n";
         };
     };
 }
