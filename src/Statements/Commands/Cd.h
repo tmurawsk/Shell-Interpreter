@@ -15,17 +15,11 @@ namespace Commands {
         void execute() override {
             if (arguments.empty()) {
                 if (chdir(getpwuid(getuid())->pw_dir) < 0)
-                    throw std::runtime_error("No such path: " +
-                                             std::string(getpwuid(getuid())->pw_dir) +
-                                             "\n"
-                    );
+                    throw NoSuchPathException();
             } else if (arguments.size() > 1) {
-                throw std::runtime_error("Invalid arguments to command: cd\n");
+                throw NoSuchPathException();
             } else if (chdir(arguments[0].c_str()) < 0) {
-                throw std::runtime_error("No such path: " +
-                                         arguments[0] +
-                                         "\n"
-                );
+                throw NoSuchPathException();
             }
         };
     };
