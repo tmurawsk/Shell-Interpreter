@@ -6,16 +6,18 @@
 #define SHELL_INTERPRETER_PWD_H
 
 #include "../Statement.h"
+#include "../../Exceptions.h"
+#include <iostream>
+#include <unistd.h>
 
 namespace Commands {
-    class Pwd: public Statement {
+    class Pwd : public Statement {
     public:
-        void execute() override{
-            std::cout << "pwd: ";
-            for(auto & I : arguments){
-                std::cout << I << " ";
-            }
-            std::cout << "\n";
+        void execute() override {
+            if (!arguments.empty())
+                throw InvalidNumberOfParametersException();
+
+            std::cout << get_current_dir_name() << std::endl;
         };
     };
 }
