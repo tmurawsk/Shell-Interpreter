@@ -12,7 +12,7 @@
 #include "../Statements/Statement.h"
 #include "../Statements/Commands/Exp.h"
 #include "../Statements/Commands/Cd.h"
-#include "../Exceptions/UnknownToken.h"
+#include "../Exceptions.h"
 #include "../Statements/Statement.h"
 #include "../Statements/Commands/Pwd.h"
 #include <iostream>
@@ -22,7 +22,7 @@
 using namespace Commands;
 class Parser {
 public:
-    Parser();
+    Parser() = default;
     std::vector<Token> parseLine(const std::string & line);
     void parseAndExecuteTokens(const std::vector<Token> & tokens);
     /**

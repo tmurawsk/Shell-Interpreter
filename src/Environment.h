@@ -3,7 +3,6 @@
 
 #include <string>
 #include <unistd.h>
-#include "Exceptions/PathReadException.h"
 
 namespace Environment {
 
@@ -17,11 +16,6 @@ namespace Environment {
         if(userName != nullptr)
             return std::string(userName);
         return "UnknownUser";
-
-        /*char userName[maxUserSize];
-        if(getlogin_r(userName,maxUserSize))
-            return std::string(userName);
-        return "UnknownUser";*/
     }
 
     static std::string getHost(){
@@ -38,8 +32,8 @@ namespace Environment {
         if (getcwd(path, maxPathSize - 1) != nullptr) {
             path[maxPathSize - 1] = 0;
             return std::string(path);
-        }
-        throw PathReadException();
+        }else
+            return "Unknown path";
     }
 
     static std::string getDate() {

@@ -2,7 +2,6 @@
 // Created by dram on 06.06.18.
 //
 
-
 #include "Parser.h"
 #include "../Statements/Commands/Echo.h"
 #include "../Statements/Commands/Exit.h"
@@ -23,8 +22,8 @@ std::vector<Token> Parser::parseLine(const std::string &line) {
     char ch;
     for (int i = 0; i < line.size(); i++) {
         ch = line[i];
-        if (isalnum(ch) || ch == '/' || ch == '.') { //TODO add " and ' - read chars until next " or '
-            buffer += ch;               //TODO add also .
+        if (isalpha(ch)) {
+            buffer += ch;
         } else {
             if (!buffer.empty()) {
                 tokens.emplace_back(String, buffer);
@@ -41,7 +40,7 @@ std::vector<Token> Parser::parseLine(const std::string &line) {
                         i++;
                     }
                     else {
-                        throw UnknownToken();
+                        throw UnknownTokenException();
                     }
                     break;
                 case '|':
@@ -53,8 +52,7 @@ std::vector<Token> Parser::parseLine(const std::string &line) {
                 case ' ':
                     break;
                 default:
-                    throw UnknownToken();
-
+                    throw UnknownTokenException();
             }
         }
     }
@@ -63,10 +61,6 @@ std::vector<Token> Parser::parseLine(const std::string &line) {
         buffer = "";
     }
     return tokens;
-}
-
-Parser::Parser() {
-
 }
 
 void Parser::parseAndExecuteTokens(const std::vector<Token> &tokens) {
@@ -99,7 +93,7 @@ std::shared_ptr<Statement> Parser::parseCommand(int from, const std::vector<Toke
         ptr = std::make_shared<Pwd>();
     }
     else {
-        throw std::runtime_error("Unknown command!\n");
+        throw UnknownCommand();
     }
 
     //add arguments
