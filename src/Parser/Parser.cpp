@@ -23,8 +23,8 @@ std::vector<Token> Parser::parseLine(const std::string &line) {
     char ch;
     for (int i = 0; i < line.size(); i++) {
         ch = line[i];
-        if (isalpha(ch)) {
-            buffer += ch;
+        if (isalnum(ch) || ch == '/' || ch == '.') { //TODO add " and ' - read chars until next " or '
+            buffer += ch;               //TODO add also .
         } else {
             if (!buffer.empty()) {
                 tokens.emplace_back(String, buffer);
@@ -99,7 +99,7 @@ std::shared_ptr<Statement> Parser::parseCommand(int from, const std::vector<Toke
         ptr = std::make_shared<Pwd>();
     }
     else {
-        throw std::runtime_error("Unknown command!");
+        throw std::runtime_error("Unknown command!\n");
     }
 
     //add arguments

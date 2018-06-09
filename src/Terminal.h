@@ -34,7 +34,7 @@ public:
             }
         }
         //exit typed
-        std::cin.get();
+//        std::cin.get();
         system("clear");
     }
 

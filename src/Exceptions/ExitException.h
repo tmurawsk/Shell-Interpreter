@@ -3,10 +3,10 @@
 
 #include <exception>
 
-class ExitException : std::exception{
+class ExitException : public std::exception{
 public:
     const char* what() const noexcept override {
-        return "Terminal closed";
+        return "Terminal closed\n";
     }
 };
 #endif //SHELL_INTERPRETER_EXITEXCEPTION_H
