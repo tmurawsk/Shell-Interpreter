@@ -14,7 +14,7 @@
 namespace Commands {
     class Ls: public Statement {
     public:
-        void execute() override{ //TODO arguments: empty -> .; arg[0] -> path
+        void execute() override{
 
             if (arguments.size() > 1) {
                 throw InvalidNumberOfParametersException();
