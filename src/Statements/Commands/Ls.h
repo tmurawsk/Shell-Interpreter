@@ -66,19 +66,21 @@ namespace Commands {
                             continue;
                         }
 
-                        if (i_flag) {
-                            files << ent->d_ino << " ";
-                        } //inode number
-
-                        files << getFileTypeFromInt(ent->d_type) << " "; //file type
-
                         std::string s = currDir + '/' + path + '/' + std::string(ent->d_name);
 
                         struct stat ret;
                         if ((stat((currDir + '/' + path + '/' + std::string(ent->d_name)).c_str(),
                                   &ret)) == -1) {
-                            throw InvalidArgumentsException();
+//                            throw InvalidArgumentsException();
+                            continue;
                         }
+
+                        if (i_flag) {
+                            files << ent->d_ino << " "; //inode number
+                        }
+
+                        files << getFileTypeFromInt(ent->d_type) << " "; //file type
+
 
                         files << getPermsForFile(ret) << "\t"; //permissions
 
