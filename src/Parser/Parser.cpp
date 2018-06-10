@@ -22,7 +22,7 @@ std::vector<Token> Parser::parseLine(const std::string &line) {
     char ch;
     for (int i = 0; i < line.size(); i++) {
         ch = line[i];
-        if (isalpha(ch)) {
+        if (isalpha(ch) || ch == '-') {
             buffer += ch;
         } else {
             if (!buffer.empty()) {

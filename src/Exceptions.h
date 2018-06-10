@@ -46,6 +46,14 @@ public:
     }
 };
 
+class InvalidArgumentsException : public std::exception {
+public:
+
+    const char* what() const noexcept override {
+        return "Invalid arguments";
+    }
+};
+
 /*
 class : public std::exception{
 public:
