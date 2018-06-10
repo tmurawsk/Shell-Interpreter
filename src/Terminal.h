@@ -26,7 +26,7 @@ public:
             {
                 break;
             }
-            catch (std::exception & e){
+            catch (Exception & e){
                     std::cout << e.what() << std::endl;
             }
         }

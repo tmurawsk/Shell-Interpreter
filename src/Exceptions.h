@@ -8,41 +8,39 @@
 #include <exception>
 #include <string>
 
-class ExitException : public std::exception{
+class Exception{
 public:
-    const char* what() const noexcept override {
+    virtual std::string what() const noexcept{}
+};
+
+class ExitException : public Exception{
+public:
+    std::string what() const noexcept override {
         return "Terminal closed";
     }
 };
 
-class UnknownTokenException : public std::exception{
+class UnknownTokenException : public Exception{
 public:
 
-    const char* what() const noexcept override {
+    std::string what() const noexcept override {
         return "Unknown Token";
     }
 };
 
-class UnknownCommandException: public std::exception{
+class UnknownCommandException: public Exception{
 private:
     std::string command;
 public:
-
     explicit UnknownCommandException(std::string & command_):command(command_){}
-    const char* what() const noexcept override {
-        return std::string("Unknown command: " + command).c_str();
-        /*std::string msg = "Unknown command";
-        std::cout<<msg<<std::endl;
-        msg+="\0";
-        std::cout<<msg<<std::endl;
-        const char* msg_c =  msg.c_str();
-        std::cout<<msg_c<<std::endl;
-        return msg_c;*/
+    std::string what() const noexcept override {
+
+        return "Unknown command: " + command;
     }
 };
 
 /*
-class : public std::exception{
+class : public Exception{
 public:
 
     const char* what() const noexcept override {
