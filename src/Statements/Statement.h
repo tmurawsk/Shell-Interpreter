@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include <iostream>
+#include "../Exceptions.h"
 
 class Statement {
 protected:

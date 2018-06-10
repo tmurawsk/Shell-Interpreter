@@ -39,10 +39,10 @@ public:
     }
 };
 
-class NoSuchPathException : public std::exception {
+class NoSuchPathException : public Exception {
 public:
 
-    const char* what() const noexcept override {
+    std::string what() const noexcept override {
         return "No such file or directory";
     }
 };
