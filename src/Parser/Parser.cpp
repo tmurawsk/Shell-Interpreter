@@ -4,8 +4,14 @@
 
 #include "Parser.h"
 
-std::vector<Token> Parser::parseLine(const std::string &line) {
+std::shared_ptr<Statement> Parser::parseLine(const std::string & line) {
 
+    auto tokens = readTokens(line);
+    return parseCommand(tokens);
+}
+
+
+std::vector<Token> Parser::readTokens(const std::string & line) {
     std::vector<Token> tokens;
 
     std::string buffer;
@@ -40,17 +46,12 @@ std::vector<Token> Parser::parseLine(const std::string &line) {
     return tokens;
 }
 
+
 void Parser::addAndTokenClean(std::vector<Token> & to, std::string & from) {
     if (!from.empty()) {
         to.emplace_back(String, from);
         from = "";
     }
-}
-
-void Parser::parseAndExecuteTokens(const std::vector<Token> &tokens) {
-    std::vector<Statement> commands;
-    auto command = parseCommand(tokens);
-    command->execute();
 }
 
 std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens) {
@@ -63,7 +64,7 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
 
     auto comm = command.map.find(commandName);
     if(comm == command.map.end())
-        throw UnknownCommand(commandName);
+        throw UnknownCommandException(commandName);
 
     switch((*comm).second){
         case CommandType::cd_c:

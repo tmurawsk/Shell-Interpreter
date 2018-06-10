@@ -30,16 +30,12 @@ using namespace Commands;
 class Parser {
 public:
     Parser() = default;
-    std::vector<Token> parseLine(const std::string & line);
-    void parseAndExecuteTokens(const std::vector<Token> & tokens);
-    /**
-     *
-     * @return if exit command was typed
-     */
+    std::shared_ptr<Statement> parseLine(const std::string & line);
+
 
 private:
     std::shared_ptr<Statement> parseCommand( const std::vector<Token> & tokens);
-
+    std::vector<Token> readTokens(const std::string &);
     void addAndTokenClean(std::vector<Token>&, std::string&);
 };
 
