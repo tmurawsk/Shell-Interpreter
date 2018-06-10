@@ -8,6 +8,7 @@
 
 #include <string>
 #include "Token.h"
+#include "Command.h"
 #include <memory>
 #include "../Statements/Statement.h"
 #include "../Statements/Commands/Exp.h"
@@ -15,6 +16,12 @@
 #include "../Exceptions.h"
 #include "../Statements/Statement.h"
 #include "../Statements/Commands/Pwd.h"
+#include "../Statements/Commands/Echo.h"
+#include "../Statements/Commands/Exit.h"
+#include "../Statements/Commands/Grep.h"
+#include "../Statements/Commands/Ls.h"
+#include "../Statements/Commands/Mkfifo.h"
+#include "../Statements/Commands/Exec.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -23,18 +30,13 @@ using namespace Commands;
 class Parser {
 public:
     Parser() = default;
-    std::vector<Token> parseLine(const std::string & line);
-    void parseAndExecuteTokens(const std::vector<Token> & tokens);
-    /**
-     *
-     * @return if exit command was typed
-     */
-    bool wasExit();
+    std::shared_ptr<Statement> parseLine(const std::string & line);
+
 
 private:
-    std::shared_ptr<Statement> parseCommand(int from, const std::vector<Token> & tokens);
-    bool _wasExit = false;
-
+    std::shared_ptr<Statement> parseCommand( const std::vector<Token> & tokens);
+    std::vector<Token> readTokens(const std::string &);
+    void addAndTokenClean(std::vector<Token>&, std::string&);
 };
 
 

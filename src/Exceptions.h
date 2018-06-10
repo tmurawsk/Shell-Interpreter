@@ -6,27 +6,36 @@
 #define SHELL_INTERPRETER_EXCEPTIONS_H
 
 #include <exception>
+#include <string>
 
-class ExitException : public std::exception{
+class Exception{
 public:
-    const char* what() const noexcept override {
+    virtual std::string what() const noexcept{}
+};
+
+class ExitException : public Exception{
+public:
+    std::string what() const noexcept override {
         return "Terminal closed";
     }
 };
 
-class UnknownTokenException : public std::exception{
+class UnknownTokenException : public Exception{
 public:
 
-    const char* what() const noexcept override {
+    std::string what() const noexcept override {
         return "Unknown Token";
     }
 };
 
-class UnknownCommand: public std::exception{
+class UnknownCommandException: public Exception{
+private:
+    std::string command;
 public:
+    explicit UnknownCommandException(std::string & command_):command(command_){}
+    std::string what() const noexcept override {
 
-    const char* what() const noexcept override {
-        return "Unknown command";
+        return "Unknown command: " + command;
     }
 };
 
@@ -39,7 +48,7 @@ public:
 };
 
 /*
-class : public std::exception{
+class : public Exception{
 public:
 
     const char* what() const noexcept override {

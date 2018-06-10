@@ -10,6 +10,8 @@ namespace Environment {
     const static unsigned int maxNameSize = 64;
     const static unsigned int maxTimeSize = 16;
 
+    const static unsigned int maxCommandSize = 256;
+    const static unsigned int maxArgumants = 64;
 
     static std::string getUser() {
         char * userName = getlogin();

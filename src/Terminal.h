@@ -19,15 +19,14 @@ public:
             try{
                 std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
                 std::getline(std::cin,terminalInput);
-                std::vector<Token> tokens = parser.parseLine(terminalInput);
-                parser.parseAndExecuteTokens(tokens);
-
+                auto command =  parser.parseLine(terminalInput);
+                command->execute();
             }
             catch (ExitException & e)
             {
                 break;
             }
-            catch (std::exception & e){
+            catch (Exception & e){
                     std::cout << e.what() << std::endl;
             }
         }
