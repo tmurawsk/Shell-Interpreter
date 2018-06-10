@@ -23,10 +23,12 @@ public:
 };
 
 class UnknownCommand: public std::exception{
+private:
+    std::string command;
 public:
-
+    explicit UnknownCommand(std::string command_) : command(command_){}
     const char* what() const noexcept override {
-        return "Unknown command";
+        return std::string("Unknown command: " + command).c_str();
     }
 };
 

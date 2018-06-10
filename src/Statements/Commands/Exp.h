@@ -11,7 +11,7 @@ namespace Commands {
     class Exp: public Statement {
     public:
         void execute() override{
-            std::cout << "exp: ";
+            std::cout << "export: ";
             for(auto & I : arguments){
                 std::cout << I << " ";
             }

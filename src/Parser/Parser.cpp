@@ -3,103 +3,101 @@
 //
 
 #include "Parser.h"
-#include "../Statements/Commands/Echo.h"
-#include "../Statements/Commands/Exit.h"
-#include "../Statements/Commands/Grep.h"
-#include "../Statements/Commands/Ls.h"
-#include "../Statements/Commands/Mkfifo.h"
-
-bool Parser::wasExit() {
-    return _wasExit;
-}
 
 std::vector<Token> Parser::parseLine(const std::string &line) {
 
-    // ls aaaa | grep ccc | grep xyz ads dasd dsad >> & out < in
     std::vector<Token> tokens;
 
     std::string buffer;
     char ch;
-    for (int i = 0; i < line.size(); i++) {
-        ch = line[i];
-        if (isalpha(ch)) {
-            buffer += ch;
-        } else {
-            if (!buffer.empty()) {
-                tokens.emplace_back(String, buffer);
-                buffer = "";
-            }
-
-            switch (ch) {
-                case '<':
-                    tokens.emplace_back(IN, "");
-                    break;
-                case '>':
-                    if (line[i + 1] == '>') {
-                        tokens.emplace_back(OUT, "");
-                        i++;
-                    }
-                    else {
-                        throw UnknownTokenException();
-                    }
-                    break;
-                case '|':
-                    tokens.emplace_back(PIPE, "");
-                    break;
-                case '$':
-                    tokens.emplace_back(ENV, "");
-                    break;
-                case ' ':
-                    break;
-                default:
-                    throw UnknownTokenException();
-            }
+    for(auto i : line) {
+        ch = i;
+        if(isspace(ch))
+            ch = ' ';
+        switch (ch) {
+            case '<':
+                addAndTokenClean(tokens,buffer);
+                tokens.emplace_back(IN,"<");
+                break;
+            case '>':
+                addAndTokenClean(tokens,buffer);
+                tokens.emplace_back(OUT,">");
+                break;
+            case '|':
+                addAndTokenClean(tokens,buffer);
+                tokens.emplace_back(PIPE,"|");
+                break;
+            case ' ':
+                addAndTokenClean(tokens,buffer);
+                break;
+            default:
+                buffer += ch;
         }
+        if(buffer == "./" && tokens.empty())
+            addAndTokenClean(tokens,buffer);
     }
-    if (!buffer.empty()) {
-        tokens.emplace_back(String, buffer);
-        buffer = "";
-    }
+    addAndTokenClean(tokens,buffer);
     return tokens;
+}
+
+void Parser::addAndTokenClean(std::vector<Token> & to, std::string & from) {
+    if (!from.empty()) {
+        to.emplace_back(String, from);
+        from = "";
+    }
 }
 
 void Parser::parseAndExecuteTokens(const std::vector<Token> &tokens) {
     std::vector<Statement> commands;
-    auto command = parseCommand(0, tokens);
+    auto command = parseCommand(tokens);
     command->execute();
 }
 
-std::shared_ptr<Statement> Parser::parseCommand(int from, const std::vector<Token> &tokens) {
-    std::string commandName = tokens[from].value;
+std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens) {
+
+    std::string commandName = tokens.begin()->value;
     std::transform(commandName.begin(), commandName.end(), commandName.begin(), ::tolower); //ignore case
 
+    Command command;
     std::shared_ptr<Statement> ptr;
-    if(commandName == "cd"){
-        ptr = std::make_shared<Cd>();
-    } else if(commandName == "echo"){
-        ptr = std::make_shared<Echo>();
-    } else if(commandName == "exit"){
-        ptr = std::make_shared<Exit>();
-        _wasExit = true;
-    } else if(commandName == "exp"){
-        ptr = std::make_shared<Exp>();
-    } else if(commandName == "grep"){
-        ptr = std::make_shared<Grep>();
-    } else if(commandName == "ls"){
-        ptr = std::make_shared<Ls>();
-    } else if(commandName == "mkfifo"){
-        ptr = std::make_shared<Mkfifo>();
-    } else if(commandName == "pwd"){
-        ptr = std::make_shared<Pwd>();
-    }
-    else {
-        throw UnknownCommand();
+
+    auto comm = command.map.find(commandName);
+    if(comm == command.map.end())
+        throw UnknownCommand(commandName);
+
+    switch((*comm).second){
+        case CommandType::cd_c:
+            ptr = std::make_shared<Cd>();
+            break;
+        case CommandType::echo_c:
+            ptr = std::make_shared<Echo>();
+            break;
+        case CommandType::exec_c:
+            ptr = std::make_shared<Exec>();
+            break;
+        case CommandType::exit_c:
+            ptr = std::make_shared<Exit>();
+            break;
+        case CommandType::exp_c:
+            ptr = std::make_shared<Exp>();
+            break;
+        case CommandType::grep_c:
+            ptr = std::make_shared<Grep>();
+            break;
+        case CommandType::ls_c:
+            ptr = std::make_shared<Ls>();
+            break;
+        case CommandType::mkfifo_c:
+            ptr = std::make_shared<Mkfifo>();
+            break;
+        case CommandType::pwd_c:
+            ptr = std::make_shared<Pwd>();
+            break;
     }
 
-    //add arguments
-    for(int i = from+1; i < tokens.size() && tokens[i].type == String; i++){
+    for (int i = 1; i < tokens.size(); ++i)
         ptr->addArgument(tokens[i].value);
-    }
+
     return ptr;
 }
 

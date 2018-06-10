@@ -6,22 +6,24 @@
 #define SHELL_INTERPRETER_TOKEN_H
 
 #include <string>
+#include <map>
+
 enum TokenType {
     String,
     IN,
     OUT,
-    ENV,
     PIPE,
     UNDEFINED
-
 };
 
-
-struct Token {
-    Token(TokenType type, const std::string &value) : type(type), value(value) {}
+class Token {
+public:
+    explicit Token(TokenType type, const std::string & value = "") : type(type), value(value) {}
 
     TokenType type = UNDEFINED;
     std::string value;
 };
+
+
 
 #endif //SHELL_INTERPRETER_TOKEN_H
