@@ -47,6 +47,22 @@ public:
     }
 };
 
+class InvalidNumberOfParametersException : public std::exception {
+public:
+
+    const char* what() const noexcept override {
+        return "Wrong number of parameters";
+    }
+};
+
+class InvalidArgumentsException : public std::exception {
+public:
+
+    const char* what() const noexcept override {
+        return "Invalid arguments";
+    }
+};
+
 /*
 class : public Exception{
 public:

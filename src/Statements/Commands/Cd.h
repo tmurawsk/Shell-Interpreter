@@ -8,6 +8,7 @@
 #include <pwd.h>
 #include <unistd.h>
 #include "../Statement.h"
+#include "../../Exceptions.h"
 
 namespace Commands {
     class Cd : public Statement {
@@ -17,7 +18,7 @@ namespace Commands {
                 if (chdir(getpwuid(getuid())->pw_dir) < 0)
                     throw NoSuchPathException();
             } else if (arguments.size() > 1) {
-                throw NoSuchPathException();
+                throw InvalidNumberOfParametersException();
             } else if (chdir(arguments[0].c_str()) < 0) {
                 throw NoSuchPathException();
             }
