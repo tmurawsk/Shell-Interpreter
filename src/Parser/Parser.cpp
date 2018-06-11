@@ -16,8 +16,8 @@ std::vector<Token> Parser::readTokens(const std::string & line) {
 
     std::string buffer;
     char ch;
-    for(auto i : line) {
-        ch = i;
+    for(int i = 0; i < line.size() ; ++i) {
+        ch = line[i];
         if(isspace(ch))
             ch = ' ';
         switch (ch) {
@@ -34,6 +34,16 @@ std::vector<Token> Parser::readTokens(const std::string & line) {
                 tokens.emplace_back(PIPE,"|");
                 break;
             case ' ':
+                addAndTokenClean(tokens,buffer);
+                break;
+            case'\'':
+                addAndTokenClean(tokens,buffer);
+                buffer = readSingleQuote(line,i);
+                addAndTokenClean(tokens,buffer);
+                break;
+            case '\"':
+                addAndTokenClean(tokens,buffer);
+                buffer = readDoubleQuote(line,i);
                 addAndTokenClean(tokens,buffer);
                 break;
             default:
@@ -100,5 +110,28 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
         ptr->addArgument(tokens[i].value);
 
     return ptr;
+}
+
+std::string Parser::readSingleQuote(const std::string & line, int & i ) {
+    return readTo(line, i, '\'');
+}
+
+std::string Parser::readDoubleQuote(const std::string & line, int & i) {
+   std::string result = readTo(line,i,'\"');
+
+    return  result;
+}
+
+std::string Parser::readTo(const std::string & line, int & i , char c) {
+    std::string result;
+
+    ++i;
+    while(i < line.size()){
+        if(line[i] == c)
+            return result;
+        result += line[i];
+        ++i;
+    }
+    throw MissingSignException(c);
 }
 

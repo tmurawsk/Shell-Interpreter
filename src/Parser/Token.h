@@ -13,6 +13,8 @@ enum TokenType {
     IN,
     OUT,
     PIPE,
+    QUOTE,
+    DOUBLE_QUOTE,
     UNDEFINED
 };
 

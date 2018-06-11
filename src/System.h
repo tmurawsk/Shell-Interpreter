@@ -4,7 +4,7 @@
 #include <string>
 #include <unistd.h>
 
-namespace Environment {
+namespace System {
 
     const static unsigned int maxPathSize = 256;
     const static unsigned int maxNameSize = 64;

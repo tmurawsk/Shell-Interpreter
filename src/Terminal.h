@@ -6,11 +6,11 @@
 #include <unistd.h>
 #include <vector>
 
-#include "Environment.h"
+#include "System.h"
 #include "Exceptions.h"
 #include "Parser/Parser.h"
 
-using namespace Environment;
+using namespace System;
 class Terminal{
 public:
     void start(){
