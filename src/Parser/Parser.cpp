@@ -3,6 +3,7 @@
 //
 
 #include "Parser.h"
+const char Parser::nonChangeValue = '\0';
 
 std::shared_ptr<Statement> Parser::parseLine(const std::string & line) {
 
@@ -46,6 +47,12 @@ std::vector<Token> Parser::readTokens(const std::string & line) {
                 buffer = readDoubleQuote(line,i);
                 addAndTokenClean(tokens,buffer);
                 break;
+            ///end case
+            case '\\':
+                if(++i < line.size() && line[i] == ' ')
+                    ch = ' ';
+                else
+                    --i;
             default:
                 buffer += ch;
         }
@@ -113,12 +120,18 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
 }
 
 std::string Parser::readSingleQuote(const std::string & line, int & i ) {
-    return readTo(line, i, '\'');
+    std::string result = readTo(line, i, '\'');
+    if(!result.empty() && result[0] == '$') {
+        result = nonChangeValue + result;
+    }
+    return result;
 }
 
 std::string Parser::readDoubleQuote(const std::string & line, int & i) {
-   std::string result = readTo(line,i,'\"');
+    std::string result = readTo(line,i,'\"');
+    for(int j = 0 ; j < result.size() ; ++j){
 
+    }
     return  result;
 }
 

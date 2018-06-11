@@ -32,7 +32,7 @@ public:
     Parser() = default;
     std::shared_ptr<Statement> parseLine(const std::string & line);
 
-
+    const static char nonChangeValue;
 private:
     std::shared_ptr<Statement> parseCommand( const std::vector<Token> & tokens);
     std::vector<Token> readTokens(const std::string &);

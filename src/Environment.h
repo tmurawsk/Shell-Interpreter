@@ -9,16 +9,16 @@
 #include <string>
 #include "Exceptions.h"
 
-class Enviroment {
-public:
-    explicit Enviroment();
+namespace Environment {
     bool add(std::string, std::string);
     std::string find(std::string);
     bool remove(std::string);
+    std::string getVariable(std:: string);
 
-private:
-    std::map<std::string, std::string> embeddedVariables;
-    std::map<std::string, std::string> usersVariable;
+    std::map<std::string, std::string> embeddedVariables = {};
+    std::map<std::string, std::string> usersVariable = {};
+
+
 };
 
 
