@@ -1,7 +1,3 @@
-//
-// Created by dram on 06.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_CD_H
 #define SHELL_INTERPRETER_CD_H
 
@@ -12,8 +8,7 @@
 
 namespace Commands {
     class Cd : public Statement {
-    public:
-        void execute() override {
+        void myImplement(){
             if (arguments.empty()) {
                 if (chdir(getpwuid(getuid())->pw_dir) < 0)
                     throw NoSuchPathException();
@@ -22,7 +17,11 @@ namespace Commands {
             } else if (chdir(arguments[0].c_str()) < 0) {
                 throw NoSuchPathException();
             }
-        };
+        }
+    public:
+        void execute() override {
+            myImplement();
+        }
     };
 }
 #endif //SHELL_INTERPRETER_CD_H
