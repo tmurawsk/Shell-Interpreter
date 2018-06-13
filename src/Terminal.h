@@ -5,6 +5,7 @@
 #include <iostream>
 #include <unistd.h>
 #include <vector>
+#include <signal.h>
 
 #include "Environment.h"
 #include "Exceptions.h"
@@ -13,9 +14,22 @@
 using namespace Environment;
 class Terminal{
 public:
+    static int keepRunning;
+    static void sigIntHandler(int value){
+        std::cout << "SigInt signal! Bye Bye :)" << std::endl;
+        keepRunning = 0;
+        exit(0);
+    }
+    static void sigQuitHandler(int val){
+        std::cout << "Quit signal! Bye Bye :)" << std::endl;
+        keepRunning = 0;
+        exit(0);
+    }
     void start(){
+        signal(SIGINT, Terminal::sigIntHandler); //ctrl + c
+        signal(SIGQUIT, Terminal::sigQuitHandler); // ctrl + /
 
-        while(true){
+        while(keepRunning){
             try{
                 std::string host;
                 std::string user;
@@ -68,4 +82,5 @@ private:
 
     std::string terminalInput;
 };
+int Terminal::keepRunning = 1; //init
 #endif //SHELL_INTERPRETER_TERMINAL_H
