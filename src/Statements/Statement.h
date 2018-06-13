@@ -11,6 +11,8 @@
 class Statement {
 protected:
     std::vector<std::string> arguments;
+    std::string inFile;
+    std::string outFile;
 public:
     Statement() = default;
 
