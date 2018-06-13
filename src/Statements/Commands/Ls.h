@@ -13,6 +13,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <grp.h>
+#include <cstring>
 
 namespace Commands {
     class Ls : public Statement {
@@ -53,12 +54,21 @@ namespace Commands {
             int fileCounter = 0;
             int filesInOneLineCounter = 0;
             std::string path;
+            bool matchFileNameToPatern = false;
+            std::string filePattern;
 
             path = arguments.empty() || arguments[arguments.size() - 1][0] == '-' ?
                    "." : arguments[arguments.size() - 1];
 
             std::string currDir = get_current_dir_name();
 
+            //For ls *.txt
+            size_t founded = path.find('.');
+            if (founded != std::string::npos && founded != 0) {
+                matchFileNameToPatern = true;
+                filePattern = path;
+                path = ".";
+            }
             if ((dir = opendir(path.c_str())) != NULL) {
                 while ((ent = readdir(dir)) != NULL) { //read files
                     if (l_flag) {
@@ -74,11 +84,12 @@ namespace Commands {
 //                            throw InvalidArgumentsException();
                             continue;
                         }
-
+                        if (matchFileNameToPatern && !Statement::isStringMatchPatern(std::string(ent->d_name), filePattern)) {
+                            continue;
+                        }
                         if (i_flag) {
                             files << ent->d_ino << " "; //inode number
                         }
-
                         files << getFileTypeFromInt(ent->d_type) << " "; //file type
 
 
@@ -100,6 +111,9 @@ namespace Commands {
                         if (!a_flag && ent->d_name[0] == '.') //ignore hidden
                             continue;
 
+                        if (matchFileNameToPatern && !Statement::isStringMatchPatern(std::string(ent->d_name), filePattern)) {
+                            continue;
+                        }
                         if (i_flag)
                             files << ent->d_ino << " "; //inode number
 
@@ -119,10 +133,11 @@ namespace Commands {
             std::stringstream output;
             output << "total: " << fileCounter << "\n" << files.str();
 
-            std::cout << output.str();
+            std::cout << output.str() << std::endl;
         };
 
     private:
+
         std::string getPermsForFile(struct stat &ret) {
             int owner = (ret.st_mode & S_IRUSR) | (ret.st_mode & S_IWUSR) | (ret.st_mode & S_IXUSR); //owner
             int group = (ret.st_mode & S_IRGRP) | (ret.st_mode & S_IWGRP) | (ret.st_mode & S_IXGRP); //group

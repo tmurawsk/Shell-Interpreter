@@ -4,50 +4,50 @@
 
 #include "Parser.h"
 
-std::shared_ptr<Statement> Parser::parseLine(const std::string & line) {
+std::shared_ptr<Statement> Parser::parseLine(const std::string &line) {
 
     auto tokens = readTokens(line);
     return parseCommand(tokens);
 }
 
 
-std::vector<Token> Parser::readTokens(const std::string & line) {
+std::vector<Token> Parser::readTokens(const std::string &line) {
     std::vector<Token> tokens;
 
     std::string buffer;
     char ch;
-    for(auto i : line) {
+    for (auto i : line) {
         ch = i;
-        if(isspace(ch))
+        if (isspace(ch))
             ch = ' ';
         switch (ch) {
             case '<':
-                addAndTokenClean(tokens,buffer);
-                tokens.emplace_back(IN,"<");
+                addAndTokenClean(tokens, buffer);
+                tokens.emplace_back(IN, "<");
                 break;
             case '>':
-                addAndTokenClean(tokens,buffer);
-                tokens.emplace_back(OUT,">");
+                addAndTokenClean(tokens, buffer);
+                tokens.emplace_back(OUT, ">");
                 break;
             case '|':
-                addAndTokenClean(tokens,buffer);
-                tokens.emplace_back(PIPE,"|");
+                addAndTokenClean(tokens, buffer);
+                tokens.emplace_back(PIPE, "|");
                 break;
             case ' ':
-                addAndTokenClean(tokens,buffer);
+                addAndTokenClean(tokens, buffer);
                 break;
             default:
                 buffer += ch;
         }
-        if(buffer == "./" && tokens.empty())
-            addAndTokenClean(tokens,buffer);
+        if (buffer == "./" && tokens.empty())
+            addAndTokenClean(tokens, buffer);
     }
-    addAndTokenClean(tokens,buffer);
+    addAndTokenClean(tokens, buffer);
     return tokens;
 }
 
 
-void Parser::addAndTokenClean(std::vector<Token> & to, std::string & from) {
+void Parser::addAndTokenClean(std::vector<Token> &to, std::string &from) {
     if (!from.empty()) {
         to.emplace_back(String, from);
         from = "";
@@ -63,10 +63,10 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
     std::shared_ptr<Statement> ptr;
 
     auto comm = command.map.find(commandName);
-    if(comm == command.map.end())
+    if (comm == command.map.end())
         throw UnknownCommandException(commandName);
 
-    switch((*comm).second){
+    switch ((*comm).second) {
         case CommandType::cd_c:
             ptr = std::make_shared<Cd>();
             break;
@@ -101,4 +101,3 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
 
     return ptr;
 }
-
