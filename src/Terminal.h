@@ -5,7 +5,6 @@
 #include <iostream>
 #include <unistd.h>
 #include <vector>
-#include <signal.h>
 
 #include "System.h"
 #include "Exceptions.h"
@@ -49,7 +48,7 @@ public:
                 } catch(UnknownPathException &e){
                     dir = "UnknownPath";
                 }
-                std::cout << "[" << getDate() << "]" << user << "@" << host << ":" << dir << ">";
+                std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
                 std::getline(std::cin,terminalInput);
                 auto command =  parser.parseLine(terminalInput);
                 command->execute();

@@ -77,6 +77,28 @@ public:
         return "Undefined variable " + name;
     }
 };
+
+class UnknownUserException : public Exception {
+public:
+
+    std::string What() const noexcept override {
+        return "Invalid arguments";
+    }
+};
+class UnknownHostException : public Exception {
+public:
+
+    std::string What() const noexcept override {
+        return "Invalid arguments";
+    }
+};
+class UnknownPathException : public Exception {
+public:
+
+    std::string What() const noexcept override {
+        return "Invalid arguments";
+    }
+};
 /*
 class : public Exception{
 public:
