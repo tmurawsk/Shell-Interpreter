@@ -1,7 +1,3 @@
-//
-// Created by jacek on 09.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_EXCEPTIONS_H
 #define SHELL_INTERPRETER_EXCEPTIONS_H
 

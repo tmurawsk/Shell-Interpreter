@@ -1,7 +1,3 @@
-//
-// Created by jacek on 10.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_COMMAND_H
 #define SHELL_INTERPRETER_COMMAND_H
 

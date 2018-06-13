@@ -1,7 +1,3 @@
-//
-// Created by jacek on 13.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_SETENV_H
 #define SHELL_INTERPRETER_SETENV_H
 
@@ -12,7 +8,7 @@ namespace Commands {
     class SetEnv : public Statement {
     public:
         void execute() override {
-            std::cout << "setValue: ";
+            std::cout << "setValue: ";      // TODO
             for(auto & I : arguments){
                 std::cout << I << " ";
             }

@@ -1,7 +1,3 @@
-//
-// Created by dram on 13.06.18.
-//
-
 #define BOOST_TEST_MODULE Tests
 
 #include "../src/Statements/Statement.h"

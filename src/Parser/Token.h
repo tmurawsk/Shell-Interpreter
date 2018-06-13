@@ -1,7 +1,3 @@
-//
-// Created by dram on 06.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_TOKEN_H
 #define SHELL_INTERPRETER_TOKEN_H
 

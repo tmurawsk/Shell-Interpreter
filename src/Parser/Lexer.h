@@ -1,7 +1,3 @@
-//
-// Created by jacek on 13.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_LEXER_H
 #define SHELL_INTERPRETER_LEXER_H
 

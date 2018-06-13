@@ -1,7 +1,3 @@
-//
-// Created by dram on 13.06.18.
-//
-
 #include "../src/System.h"
 #include "../src/Exceptions.h"
 #include <boost/test/unit_test.hpp>

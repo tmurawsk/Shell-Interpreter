@@ -1,7 +1,3 @@
-//
-// Created by dram on 06.06.18.
-//
-
 #include "Parser.h"
 
 std::shared_ptr<Statement> Parser::parseLine(const std::string &line) {

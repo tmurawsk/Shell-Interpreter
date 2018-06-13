@@ -1,7 +1,3 @@
-//
-// Created by jacek on 11.06.18.
-//
-
 #include "Environment.h"
 #include "Parser/Parser.h"
 
