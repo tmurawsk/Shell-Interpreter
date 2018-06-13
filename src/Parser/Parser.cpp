@@ -4,10 +4,14 @@
 
 #include "Parser.h"
 
-std::shared_ptr<Statement> Parser::parseLine(const std::string &line) {
+
+Redirector Parser::parseLine(const std::string &line) {
 
     auto tokens = lexer.readTokens(line);
-    return parseCommand(tokens);
+    auto command =  parseCommand(tokens);
+    Redirector redirector;
+    redirector.addPipe(command);
+    return redirector;
 }
 
 std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens) {

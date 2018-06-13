@@ -26,13 +26,14 @@
 #include "../Statements/Commands/Mkfifo.h"
 #include "../Statements/Commands/Exec.h"
 #include "../Statements/Commands/SetEnv.h"
+#include "../Statements/Redirector.h"
 
 
 using namespace Commands;
 class Parser {
 public:
     Parser() = default;
-    std::shared_ptr<Statement> parseLine(const std::string & line);
+    Redirector parseLine(const std::string & line);
 
 private:
     Lexer lexer;

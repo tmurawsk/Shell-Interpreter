@@ -9,6 +9,7 @@
 #include "System.h"
 #include "Exceptions.h"
 #include "Parser/Parser.h"
+#include "Statements/Redirector.h"
 
 using namespace System;
 class Terminal{
@@ -51,7 +52,8 @@ public:
                 std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
                 std::getline(std::cin,terminalInput);
                 auto command =  parser.parseLine(terminalInput);
-                command->execute();
+//                command->execute();
+                    command.execute();
             }
             catch (ExitException & e){
                 break;
