@@ -8,32 +8,25 @@
 #include <exception>
 #include <string>
 
-class Exception{
+class Exception : std::exception{
 public:
-    virtual std::string what() const noexcept{}
+    virtual std::string What() const noexcept{}
 };
 
 class ExitException : public Exception{
 public:
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "Terminal closed";
     }
 };
 
-class UnknownTokenException : public Exception{
-public:
-
-    std::string what() const noexcept override {
-        return "Unknown Token";
-    }
-};
 
 class UnknownCommandException: public Exception{
 private:
     std::string command;
 public:
     explicit UnknownCommandException(std::string & command_):command(command_){}
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
 
         return "Unknown command: " + command;
     }
@@ -42,52 +35,53 @@ public:
 class NoSuchPathException : public Exception {
 public:
 
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "No such file or directory";
     }
 };
 
-class InvalidNumberOfParametersException : public std::exception {
+class InvalidNumberOfParametersException : public Exception {
 public:
 
-    const char* what() const noexcept override {
+    std::string What() const noexcept override {
         return "Wrong number of parameters";
     }
 };
 
-class InvalidArgumentsException : public std::exception {
+class InvalidArgumentsException : public Exception {
 public:
 
-    const char* what() const noexcept override {
+    std::string What() const noexcept override {
         return "Invalid arguments";
     }
 };
-class UnknownUserException : public std::exception {
-public:
 
-    const char* what() const noexcept override {
-        return "Invalid arguments";
+class MissingSignException: public Exception{
+    char c;
+public:
+    explicit MissingSignException(char c_):c(c_){}
+    std::string What() const noexcept override {
+        std::string result = "Missing ";
+        result +=c;
+        return result;
     }
 };
-class UnknownHostException : public std::exception {
-public:
 
-    const char* what() const noexcept override {
-        return "Invalid arguments";
-    }
-};
-class UnknownPathException : public std::exception {
+class UnknownVariableException: public Exception{
+private:
+    std::string name;
 public:
+    explicit UnknownVariableException(std::string& name_):name(name_){}
 
-    const char* what() const noexcept override {
-        return "Invalid arguments";
+    std::string What() const noexcept override {
+        return "Undefined variable " + name;
     }
 };
 /*
 class : public Exception{
 public:
 
-    const char* what() const noexcept override {
+    std::string what() const noexcept override {
         return "";
     }
 };
