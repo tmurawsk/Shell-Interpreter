@@ -3,6 +3,9 @@
 
 #include <string>
 #include <unistd.h>
+#include <pwd.h>
+
+#include "Exceptions.h"
 
 namespace Environment {
 
@@ -17,7 +20,14 @@ namespace Environment {
         char * userName = getlogin();
         if(userName != nullptr)
             return std::string(userName);
-        return "UnknownUser";
+
+        struct passwd * user;
+        user = getpwuid(getuid());
+
+        if(user->pw_name != nullptr)
+            return std::string(user->pw_name);
+
+        throw UnknownUserException();
     }
 
     static std::string getHost(){
@@ -26,7 +36,7 @@ namespace Environment {
             hostName[maxNameSize] = 0;
             return std::string(hostName);
         }
-        return std::string("UnknownHost");
+        throw UnknownHostException();
     }
 
     static std::string getDir() {
@@ -34,8 +44,8 @@ namespace Environment {
         if (getcwd(path, maxPathSize - 1) != nullptr) {
             path[maxPathSize - 1] = 0;
             return std::string(path);
-        }else
-            return "Unknown path";
+        }
+        throw UnknownPathException();
     }
 
     static std::string getDate() {

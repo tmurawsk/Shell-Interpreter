@@ -17,7 +17,25 @@ public:
 
         while(true){
             try{
-                std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
+                std::string host;
+                std::string user;
+                std::string dir;
+                try {
+                    host = getHost();
+                } catch(UnknownHostException &e) {
+                    host = "UnknownHost";
+                }
+                try {
+                    user = getUser();
+                } catch(UnknownUserException &e){
+                    user = "UnknownUser";
+                }
+                try {
+                    dir = getDir();
+                } catch(UnknownPathException &e){
+                    dir = "UnknownPath";
+                }
+                std::cout << "[" << getDate() << "]" << user << "@" << host << ":" << dir << ">";
                 std::getline(std::cin,terminalInput);
                 auto command =  parser.parseLine(terminalInput);
                 command->execute();
