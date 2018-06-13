@@ -1,22 +1,25 @@
-//
-// Created by dram on 06.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_EXP_H
 #define SHELL_INTERPRETER_EXP_H
 
 #include "../Statement.h"
+#include <unistd.h>
 
 namespace Commands {
     class Exp: public Statement {
     public:
         void execute() override{
-            std::cout << "export: ";
-            for(auto & I : arguments){
-                std::cout << I << " ";
+            if(fork() == 0) {
+                std::cout << "export: ";        // TODO
+                for(auto & I : arguments){
+                    std::cout << I << " ";
+                }
+                std::cout << "\n";
+                exit(1);
             }
-            std::cout << "\n";
-        };
+            else{
+                wait(NULL);
+            }
+        }
     };
 }
 #endif //SHELL_INTERPRETER_EXP_H

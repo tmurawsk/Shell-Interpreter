@@ -1,7 +1,3 @@
-//
-// Created by jacek on 03.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_STATEMENT_H
 #define SHELL_INTERPRETER_STATEMENT_H
 
@@ -9,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include "../Exceptions.h"
+#include <sys/wait.h>
 
 class Statement {
 protected:

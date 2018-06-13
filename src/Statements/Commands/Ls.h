@@ -14,26 +14,31 @@ namespace Commands {
     class Ls : public Statement {
     public:
         void execute() override {
-            if (!arguments.empty() && arguments[0] == "-my") {
-                arguments.erase(arguments.begin());
-                myImplement();
+            if (fork() == 0) {
+                if (!arguments.empty() && arguments[0] == "-my") {
+                    arguments.erase(arguments.begin());
+                    myImplement();
+                } else {
+                    std::string argument = "ls";
+                    for (auto &I : arguments) {
+                        argument += " ";
+                        argument += I;
+                    }
+                    FILE *cmd;
+                    char result[1024];
+                    cmd = popen(argument.c_str(), "r");
+                    if (cmd == nullptr) {
+                        perror("popen");
+                        exit(EXIT_FAILURE);
+                    }
+                    while (fgets(result, sizeof(result), cmd)) {
+                        printf("%s", result);
+                    }
+                    pclose(cmd);
+                    exit(1);
+                }
             } else {
-                std::string argument = "ls";
-                for (auto &I : arguments) {
-                    argument += " ";
-                    argument += I;
-                }
-                FILE *cmd;
-                char result[1024];
-                cmd = popen(argument.c_str(), "r");
-                if (cmd == nullptr) {
-                    perror("popen");
-                    exit(EXIT_FAILURE);
-                }
-                while (fgets(result, sizeof(result), cmd)) {
-                    printf("%s", result);
-                }
-                pclose(cmd);
+                wait(NULL);
             }
         }
 
@@ -121,6 +126,8 @@ namespace Commands {
                 }
             } else
                 throw NoSuchPathException();
+            if(filesInOneLineCounter)
+                files << "\n";
             std::stringstream output;
             output << "total: " << fileCounter << "\n" << files.str();
             std::cout << output.str();

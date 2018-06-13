@@ -7,11 +7,17 @@ namespace Commands {
     class Echo : public Statement {
     public:
         void execute() override {
-            for (auto &I : arguments) {
-                std::cout << I << " ";
+            if(fork() == 0) {
+                for (auto &I : arguments) {
+                    std::cout << I << " ";
+                }
+                std::cout << "\n";
+                exit(1);
             }
-            std::cout << "\n";
-        };
+            else{
+                wait(NULL);
+            }
+        }
     };
 }
 #endif //SHELL_INTERPRETER_ECHO_H

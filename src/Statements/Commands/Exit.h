@@ -1,7 +1,3 @@
-//
-// Created by dram on 06.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_EXIT_H
 #define SHELL_INTERPRETER_EXIT_H
 
@@ -17,7 +13,7 @@ namespace Commands {
             sleep(1);
             system("clear");
             throw ExitException();
-        };
+        }
     };
 }
 #endif //SHELL_INTERPRETER_EXIT_H
