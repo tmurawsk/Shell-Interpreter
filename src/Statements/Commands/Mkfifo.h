@@ -11,11 +11,10 @@ namespace Commands {
     class Mkfifo: public Statement {
     public:
         void execute() override{
-            std::cout << "mkfifo: ";
-            for(auto & I : arguments){
-                std::cout << I << " ";
-            }
-            std::cout << "\n";
+            if (arguments.empty() || arguments.size() > 1)
+                throw InvalidNumberOfParametersException();
+
+            mkfifo(arguments[0].c_str(), 0644);
         };
     };
 }
