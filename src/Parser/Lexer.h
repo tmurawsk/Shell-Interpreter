@@ -15,14 +15,9 @@ class Lexer {
 public:
     Lexer() = default;
 
-private:
     std::vector<Token> readTokens(const std::string &);
-
-    void skipSpaces(const std::string &, int &);
-
+private:
     void addTokenAndClean(std::vector<Token> &, std::string &);
-
-    std::string readTo(const std::string &, int &, char);
 
 };
 #endif //SHELL_INTERPRETER_LEXER_H

@@ -13,8 +13,9 @@ enum TokenType {
     IN,
     OUT,
     PIPE,
+    ASSIGNMENT,
+    ENV,
     SPACE,
-    ASSIGMENT,
     QUOTE,
     DOUBLE_QUOTE,
     UNDEFINED

@@ -10,13 +10,10 @@
 #include "Exceptions.h"
 #include <cstdlib>
 
-class Environment {
-public:
+namespace Environment {
     bool addOrSet(std::string, std::string);
     std::string find(std::string);
     bool remove(std::string);
-    Environment()= default;
-
 };
 
 

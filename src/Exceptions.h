@@ -8,14 +8,14 @@
 #include <exception>
 #include <string>
 
-class Exception{
+class Exception : std::exception{
 public:
-    virtual std::string what() const noexcept{}
+    virtual std::string What() const noexcept{}
 };
 
 class ExitException : public Exception{
 public:
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "Terminal closed";
     }
 };
@@ -26,7 +26,7 @@ private:
     std::string command;
 public:
     explicit UnknownCommandException(std::string & command_):command(command_){}
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
 
         return "Unknown command: " + command;
     }
@@ -35,7 +35,7 @@ public:
 class NoSuchPathException : public Exception {
 public:
 
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "No such file or directory";
     }
 };
@@ -43,7 +43,7 @@ public:
 class InvalidNumberOfParametersException : public Exception {
 public:
 
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "Wrong number of parameters";
     }
 };
@@ -51,7 +51,7 @@ public:
 class InvalidArgumentsException : public Exception {
 public:
 
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "Invalid arguments";
     }
 };
@@ -60,7 +60,7 @@ class MissingSignException: public Exception{
     char c;
 public:
     explicit MissingSignException(char c_):c(c_){}
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         std::string result = "Missing ";
         result +=c;
         return result;
@@ -73,7 +73,7 @@ private:
 public:
     explicit UnknownVariableException(std::string& name_):name(name_){}
 
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "Undefined variable " + name;
     }
 };

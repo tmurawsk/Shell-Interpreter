@@ -18,7 +18,7 @@ public:
 
     virtual ~Statement() = default;
 
-    virtual void execute() = 0; // pure virtual
+    virtual void execute(){};
     void addArgument(const std::string &arg) {
         arguments.push_back(arg);
     }

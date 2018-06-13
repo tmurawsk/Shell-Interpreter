@@ -22,12 +22,14 @@ public:
                 auto command =  parser.parseLine(terminalInput);
                 command->execute();
             }
-            catch (ExitException & e)
-            {
+            catch (ExitException & e){
                 break;
             }
             catch (Exception & e){
-                    std::cout << e.what() << std::endl;
+                std::cout << e.What() << std::endl;
+            }
+            catch  (std::exception & e){
+                std::cout << e.what() << std::endl;
             }
         }
     }
@@ -41,7 +43,7 @@ public:
     Terminal& operator=(Terminal&) = delete;
 
 private:
-    Terminal() {
+    Terminal() : parser(){
         chdir(getpwuid(getuid())->pw_dir);
         system("clear");
     }
