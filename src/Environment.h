@@ -8,16 +8,14 @@
 #include <map>
 #include <string>
 #include "Exceptions.h"
+#include <cstdlib>
 
-namespace Environment {
-    bool add(std::string, std::string);
+class Environment {
+public:
+    bool addOrSet(std::string, std::string);
     std::string find(std::string);
     bool remove(std::string);
-    std::string getVariable(std:: string);
-
-    std::map<std::string, std::string> embeddedVariables = {};
-    std::map<std::string, std::string> usersVariable = {};
-
+    Environment()= default;
 
 };
 

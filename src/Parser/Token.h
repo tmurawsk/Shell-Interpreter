@@ -9,10 +9,12 @@
 #include <map>
 
 enum TokenType {
-    String,
+    STRING,
     IN,
     OUT,
     PIPE,
+    SPACE,
+    ASSIGMENT,
     QUOTE,
     DOUBLE_QUOTE,
     UNDEFINED

@@ -22,9 +22,11 @@
 #include "../Statements/Commands/Ls.h"
 #include "../Statements/Commands/Mkfifo.h"
 #include "../Statements/Commands/Exec.h"
+#include "../Statements/Commands/SetEnv.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include "../Environment.h"
 
 using namespace Commands;
 class Parser {
@@ -35,10 +37,11 @@ public:
     const static char nonChangeValue;
 private:
     std::shared_ptr<Statement> parseCommand( const std::vector<Token> & tokens);
+    std::vector<std::string> refactorArguments(const std::vector<Token> &, int);
+
     std::vector<Token> readTokens(const std::string &);
-    void addAndTokenClean(std::vector<Token>&, std::string&);
-    std::string readSingleQuote(const std::string &,int &);
-    std::string readDoubleQuote(const std::string &,int &);
+    void skipSpaces(const std::string&, int&);
+    void addTokenAndClean(std::vector<Token>&, std::string&);
     std::string readTo(const std::string &,int &, char);
 };
 

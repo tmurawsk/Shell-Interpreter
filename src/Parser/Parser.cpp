@@ -23,50 +23,51 @@ std::vector<Token> Parser::readTokens(const std::string & line) {
             ch = ' ';
         switch (ch) {
             case '<':
-                addAndTokenClean(tokens,buffer);
+                addTokenAndClean(tokens,buffer);
                 tokens.emplace_back(IN,"<");
                 break;
             case '>':
-                addAndTokenClean(tokens,buffer);
+                addTokenAndClean(tokens,buffer);
                 tokens.emplace_back(OUT,">");
                 break;
             case '|':
-                addAndTokenClean(tokens,buffer);
+                addTokenAndClean(tokens,buffer);
                 tokens.emplace_back(PIPE,"|");
                 break;
+            case '=':
+                addTokenAndClean(tokens,buffer);
+                tokens.emplace_back(ASSIGMENT,"=");
+                break;
             case ' ':
-                addAndTokenClean(tokens,buffer);
+                addTokenAndClean(tokens,buffer);
+                tokens.emplace_back(SPACE," ");
+                skipSpaces(line,i);
                 break;
             case'\'':
-                addAndTokenClean(tokens,buffer);
-                buffer = readSingleQuote(line,i);
-                addAndTokenClean(tokens,buffer);
+                addTokenAndClean(tokens,buffer);
+                tokens.emplace_back(QUOTE,readTo(line,i,ch));
                 break;
             case '\"':
-                addAndTokenClean(tokens,buffer);
-                buffer = readDoubleQuote(line,i);
-                addAndTokenClean(tokens,buffer);
+                addTokenAndClean(tokens,buffer);
+                tokens.emplace_back(DOUBLE_QUOTE,readTo(line,i,ch));
                 break;
-            ///end case
-            case '\\':
-                if(++i < line.size() && line[i] == ' ')
-                    ch = ' ';
-                else
-                    --i;
             default:
                 buffer += ch;
         }
         if(buffer == "./" && tokens.empty())
-            addAndTokenClean(tokens,buffer);
+            addTokenAndClean(tokens,buffer);
     }
-    addAndTokenClean(tokens,buffer);
+    addTokenAndClean(tokens,buffer);
+    for(auto i :tokens){
+        std::cout<<i.type <<" "<<i.value<<std::endl;
+    }
+    std::cin;
     return tokens;
 }
 
-
-void Parser::addAndTokenClean(std::vector<Token> & to, std::string & from) {
+void Parser::addTokenAndClean(std::vector<Token> & to, std::string & from) {
     if (!from.empty()) {
-        to.emplace_back(String, from);
+        to.emplace_back(STRING, from);
         from = "";
     }
 }
@@ -74,65 +75,61 @@ void Parser::addAndTokenClean(std::vector<Token> & to, std::string & from) {
 std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens) {
 
     std::string commandName = tokens.begin()->value;
-    std::transform(commandName.begin(), commandName.end(), commandName.begin(), ::tolower); //ignore case
 
     Command command;
+    auto comm = command.map.find(commandName);
+
+    int argIndex;
     std::shared_ptr<Statement> ptr;
 
-    auto comm = command.map.find(commandName);
-    if(comm == command.map.end())
-        throw UnknownCommandException(commandName);
+    if(comm == command.map.end()) {
+        char * env = getenv(commandName.c_str());
+        if(env) {
+            ptr = std::make_shared<SetEnv>();
+            argIndex = 0;
+        }
+        else
+            throw UnknownCommandException(commandName);
+    }
+    else {
+        argIndex = 1;
+        switch ((*comm).second) {
+            case CommandType::cd_c:
+                ptr = std::make_shared<Cd>();
+                break;
+            case CommandType::echo_c:
+                ptr = std::make_shared<Echo>();
+                break;
+            case CommandType::exec_c:
+                ptr = std::make_shared<Exec>();
+                break;
+            case CommandType::exit_c:
+                ptr = std::make_shared<Exit>();
+                break;
+            case CommandType::exp_c:
+                ptr = std::make_shared<Exp>();
+                break;
+            case CommandType::grep_c:
+                ptr = std::make_shared<Grep>();
+                break;
+            case CommandType::ls_c:
+                ptr = std::make_shared<Ls>();
+                break;
+            case CommandType::mkfifo_c:
+                ptr = std::make_shared<Mkfifo>();
+                break;
+            case CommandType::pwd_c:
+                ptr = std::make_shared<Pwd>();
+                break;
+        }
 
-    switch((*comm).second){
-        case CommandType::cd_c:
-            ptr = std::make_shared<Cd>();
-            break;
-        case CommandType::echo_c:
-            ptr = std::make_shared<Echo>();
-            break;
-        case CommandType::exec_c:
-            ptr = std::make_shared<Exec>();
-            break;
-        case CommandType::exit_c:
-            ptr = std::make_shared<Exit>();
-            break;
-        case CommandType::exp_c:
-            ptr = std::make_shared<Exp>();
-            break;
-        case CommandType::grep_c:
-            ptr = std::make_shared<Grep>();
-            break;
-        case CommandType::ls_c:
-            ptr = std::make_shared<Ls>();
-            break;
-        case CommandType::mkfifo_c:
-            ptr = std::make_shared<Mkfifo>();
-            break;
-        case CommandType::pwd_c:
-            ptr = std::make_shared<Pwd>();
-            break;
     }
 
-    for (int i = 1; i < tokens.size(); ++i)
-        ptr->addArgument(tokens[i].value);
+    std::vector<std::string> args = refactorArguments(tokens,argIndex);
+    for (auto & I : args)
+        ptr->addArgument(I);
 
     return ptr;
-}
-
-std::string Parser::readSingleQuote(const std::string & line, int & i ) {
-    std::string result = readTo(line, i, '\'');
-    if(!result.empty() && result[0] == '$') {
-        result = nonChangeValue + result;
-    }
-    return result;
-}
-
-std::string Parser::readDoubleQuote(const std::string & line, int & i) {
-    std::string result = readTo(line,i,'\"');
-    for(int j = 0 ; j < result.size() ; ++j){
-
-    }
-    return  result;
 }
 
 std::string Parser::readTo(const std::string & line, int & i , char c) {
@@ -146,5 +143,14 @@ std::string Parser::readTo(const std::string & line, int & i , char c) {
         ++i;
     }
     throw MissingSignException(c);
+}
+
+void Parser::skipSpaces(const std::string& line, int& i) {
+    while(i+1 < line.size() && isspace(line[i+1]))
+        ++i;
+}
+
+std::vector<std::string> Parser::refactorArguments(const std::vector<Token> & args, int startingInde) {
+
 }
 
