@@ -62,7 +62,27 @@ public:
         return "Invalid arguments";
     }
 };
+class UnknownUserException : public std::exception {
+public:
 
+    const char* what() const noexcept override {
+        return "Invalid arguments";
+    }
+};
+class UnknownHostException : public std::exception {
+public:
+
+    const char* what() const noexcept override {
+        return "Invalid arguments";
+    }
+};
+class UnknownPathException : public std::exception {
+public:
+
+    const char* what() const noexcept override {
+        return "Invalid arguments";
+    }
+};
 /*
 class : public Exception{
 public:
