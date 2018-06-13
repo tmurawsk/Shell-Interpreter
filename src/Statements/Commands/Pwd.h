@@ -1,7 +1,3 @@
-//
-// Created by dram on 06.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_PWD_H
 #define SHELL_INTERPRETER_PWD_H
 
@@ -14,11 +10,17 @@ namespace Commands {
     class Pwd : public Statement {
     public:
         void execute() override {
-            if (!arguments.empty())
-                throw InvalidNumberOfParametersException();
+            if(fork() == 0) {
+                if (!arguments.empty())
+                    throw InvalidNumberOfParametersException();
 
-            std::cout << get_current_dir_name() << std::endl;
-        };
+                std::cout << get_current_dir_name() << std::endl;
+                exit(1);
+            }
+            else{
+                wait(NULL);
+            }
+        }
     };
 }
 #endif //SHELL_INTERPRETER_PWD_H
