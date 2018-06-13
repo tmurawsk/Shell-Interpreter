@@ -3,6 +3,7 @@
 
 #include <string>
 #include <unistd.h>
+#include <pwd.h>
 #include "Exceptions.h"
 
 namespace System {
