@@ -51,7 +51,7 @@ public:
                 // * matches in character in input
                 if (pattern[j - 1] == '*')
                     helpTable[i][j] = helpTable[i][j - 1] || helpTable[i - 1][j];
-                else if (str[i - 1] == pattern[j - 1]) { // characters match
+                else if (pattern[j-1] == '?' || str[i - 1] == pattern[j - 1]) { // characters match, or '?'
                     helpTable[i][j] = helpTable[i - 1][j - 1];
                 } else // characters dont match
                     helpTable[i][j] = false;
