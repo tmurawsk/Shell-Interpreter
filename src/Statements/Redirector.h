@@ -1,6 +1,7 @@
 #ifndef SHELL_INTERPRETER_REDIRECTOR_H
 #define SHELL_INTERPRETER_REDIRECTOR_H
 
+#define MAX_PIPES 4
 #include <tuple>
 #include <memory>
 #include "Statement.h"
