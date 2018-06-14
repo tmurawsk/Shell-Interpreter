@@ -11,15 +11,8 @@
 class Statement {
 protected:
     std::vector<std::string> arguments;
-public:
-    Statement() = default;
-
-    virtual ~Statement() = default;
-
-    virtual void execute(){};
-    void addArgument(const std::string &arg) {
-        arguments.push_back(arg);
-    }
+    std::string inFile;
+    std::string outFile;
 
     static bool isStringMatchPatern(const std::string &str, const std::string &pattern){
         //empty patern match to empty string
@@ -57,6 +50,22 @@ public:
         return helpTable[str.size()][pattern.size()];
 
     }
+
+public:
+    Statement() = default;
+
+    virtual ~Statement() = default;
+
+    virtual void execute(){};
+    void addArgument(const std::string &arg) {
+        arguments.push_back(arg);
+    }
+
+    void setInFile(const std::string & file){inFile = file;}
+    void setOutFile(const std::string& file){outFile = file;}
+    std::string getInFile(){ return inFile;}
+    std::string getOutFile(){ return outFile;}
+
 };
 
 #endif //SHELL_INTERPRETER_STATEMENT_H
