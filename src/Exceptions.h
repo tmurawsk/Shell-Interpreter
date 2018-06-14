@@ -126,6 +126,14 @@ public:
         return "Missing command";
     }
 };
+
+class MissingFileNameException: public Exception{
+public:
+
+    std::string What() const noexcept override {
+        return "Missing file";
+    }
+};
 /*
 class : public Exception{
 public:

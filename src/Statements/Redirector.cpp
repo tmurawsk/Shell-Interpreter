@@ -2,6 +2,8 @@
 
 void Redirector::execute() {
     for(auto & i : pipe){
+        std::cout<<i->getInFile()<<std::endl;
+        std::cout<<i->getOutFile()<<std::endl;
         i->execute();
     }
 }

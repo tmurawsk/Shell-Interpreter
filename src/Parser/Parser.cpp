@@ -66,7 +66,7 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
 
     }
 
-    std::vector<std::string> args = refactorArguments(tokens,argIndex);
+    std::vector<std::string> args = refactorArguments(getInputOutput(tokens,ptr),argIndex);
     for (auto & I : args) {
         std::cout<<I<<std::endl;
         ptr->addArgument(I);
@@ -75,101 +75,13 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
 }
 
 std::vector<std::string> Parser::refactorArguments(const std::vector<Token> & args, int startingIndex) {
+
     std::vector<std::string> result;
     for(int i = startingIndex ; i < args.size(); ++i){
         result.push_back(args[i].value);
     }
     return  result;
-//    enum State{
-//        argument_s,
-//        env_s,
-//        quote_s,
-//        doubleQuote_s,
-//    } state = argument_s;
-//
-//    std::vector<std::string> result;
-//
-//    for(int i = startingIndex; i < args.size() ; ++i){
-//        switch (state){
-//            case argument_s:
-//                if(args[i].type == TokenType::SPACE)
-//                    continue;
-//                if(args[i].type == TokenType::QUOTE)
-//                    state = quote_s;
-//                else if(args[i].type == TokenType::DOUBLE_QUOTE)
-//                    state = doubleQuote_s;
-//                else if(args[i].type == TokenType::ENV)
-//                    state = env_s;
-//                else
-//                    result.push_back(args[i].value);
-//                break;
-//            case env_s:
-//                result.push_back(getEnv(args,i));
-//                state = argument_s;
-//                break;
-//            case quote_s:
-//                result.push_back(getQuote(args,i));
-//                state = argument_s;
-//                break;
-//            case doubleQuote_s:
-//                result.push_back(getDoubleQuote(args,i));
-//                state = argument_s;
-//                break;
-//        }
-//    }
-//    return result;
 }
-//
-//std::string Parser::getQuote(std::vector<Token> args, int & i) {
-//    std::string result;
-//    while(i < args.size()){
-//        if(args[i].type==TokenType::QUOTE)
-//            return result;
-//        result+=args[i].value;
-//        ++i;
-//    }
-//    throw MissingSignException('\'');
-//};
-//
-//std::string Parser::getDoubleQuote(std::vector<Token> args, int & i) {
-//    std::string result;
-//    while(i < args.size()){
-//        if(args[i].type==TokenType::DOUBLE_QUOTE)
-//            return result;
-//        if(args[i].type == TokenType::ENV) {
-//            if(i+1 < args.size() && args[i+1].type == TokenType::STRING){
-//                std::string envVar = Environment::find(args[i+1].value);
-//                if(!envVar.empty()){
-//                    result+=envVar;
-//                    ++i;
-//                }
-//                else
-//                    result+=args[i].value;
-//            }
-//            ++i;
-//            continue;
-//        }
-//        result+=args[i].value;
-//        ++i;
-//    }
-//    throw MissingSignException('\"');
-//}
-//
-//std::string Parser::getEnv(std::vector<Token> args, int & i) {
-//    std::string result;
-//
-////    std::cout<<i<<" "<<args[i].type<<" "<<args[i].value<<std::endl;
-//    if(args[i].type == TokenType::QUOTE)
-//        return getQuote(args,i);
-//
-//    if(args[i].type == TokenType::DOUBLE_QUOTE)
-//        return getDoubleQuote(args,i);
-//
-//    if(args[i].type == TokenType::STRING)
-//        return Environment::find(args[i].value);
-//    else
-//        return args[i-1].value;
-//}
 
 const std::vector<std::vector<Token> > Parser::pipeSeparator(const std::vector<Token> & tokens) {
 
@@ -197,6 +109,27 @@ const std::vector<std::vector<Token> > Parser::pipeSeparator(const std::vector<T
             throw MissingCommandException();
         result.push_back(singleFunction);
         singleFunction.clear();
+    }
+    return result;
+}
+
+std::vector<Token> Parser::getInputOutput(const std::vector<Token> & tokens,std::shared_ptr<Statement>& ptr) {
+    std::vector<Token> result;
+    for(int i = 0 ; i < tokens.size() ; ++i){
+        if(tokens[i].type == TokenType::IN){
+            if(++i < tokens.size() && tokens[i].type == TokenType::STRING)
+                ptr->setInFile(tokens[i].value);
+            else
+                throw MissingFileNameException();
+        }
+        else if(tokens[i].type == TokenType::OUT){
+            if(++i < tokens.size() && tokens[i].type == TokenType::STRING)
+                ptr->setOutFile(tokens[i].value);
+            else
+                throw MissingFileNameException();
+        }
+        else
+            result.push_back(tokens[i]);
     }
     return result;
 }

@@ -61,9 +61,10 @@ public:
         arguments.push_back(arg);
     }
 
-    void setInFile(std::string & file){inFile = file;}
-    void setOoutFile(std::string& file){outFile = file;}
-
+    void setInFile(const std::string & file){inFile = file;}
+    void setOutFile(const std::string& file){outFile = file;}
+    std::string getInFile(){ return inFile;}
+    std::string getOutFile(){ return outFile;}
 
 };
 
