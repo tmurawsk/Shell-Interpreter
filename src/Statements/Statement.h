@@ -17,30 +17,18 @@ protected:
     std::string inFile;
     std::string outFile;
 
-//    std::string readFromPipe() {
-//        std::cout<<"read"<<std::endl;
-//        int fd = open(inFile.c_str(), O_RDONLY);
-//        if (fd < 0)
-//            throw BadFileDescriptorException();
-//
-//        char array[INT_MAX];
-//        read(fd, array, sizeof(array));
-//
-//        close(fd);
-//
-//        return std::string(array);
-//    }
-std::string readFromPipe(){
+    std::string readFromPipe() {
 //    std::cout<<"read"<<std::endl;
         int fd = open(inFile.c_str(), O_RDONLY);
         if (fd < 0)
             throw BadFileDescriptorException();
-        char * array = new char[INT_MAX];
-        ssize_t r = read(fd, array, INT_MAX);
+
+        char *array = new char[1024];
+        ssize_t r = read(fd, array, 1024);
 //        std::cout<<"get: "<<(int)r<<std::endl;
         close(fd);
         auto result = std::string(array);
-        delete []array;
+        delete[]array;
         result.erase(--result.end());
         result.erase(--result.end());
 //        std::cout<<"end read"<<std::endl;

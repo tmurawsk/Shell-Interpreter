@@ -26,17 +26,22 @@
 
 
 using namespace Commands;
+
 class Parser {
 public:
     Parser() = default;
-    Redirector parseLine(const std::string & line);
+
+    Redirector parseLine(const std::string &line);
 
 private:
     Lexer lexer;
+
     const std::vector<std::vector<Token> > pipeSeparator(const std::vector<Token> &);
 
-    std::shared_ptr<Statement> parseCommand( const std::vector<Token> &);
-    std::vector<Token> getInputOutput( const std::vector<Token> &, std::shared_ptr<Statement>&);
+    std::shared_ptr<Statement> parseCommand(const std::vector<Token> &);
+
+    std::vector<Token> getInputOutput(const std::vector<Token> &, std::shared_ptr<Statement> &);
+
     std::vector<std::string> refactorArguments(const std::vector<Token> &, int);
 };
 

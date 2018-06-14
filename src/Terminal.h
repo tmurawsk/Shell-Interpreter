@@ -12,74 +12,79 @@
 #include "Statements/Redirector.h"
 
 using namespace System;
-class Terminal{
+
+class Terminal {
 public:
     static int keepRunning;
-    static void sigIntHandler(int value){
+
+    static void sigIntHandler(int value) {
         std::cout << "SigInt signal! Bye Bye :)" << std::endl;
         keepRunning = 0;
         exit(0);
     }
-    static void sigQuitHandler(int val){
+
+    static void sigQuitHandler(int val) {
         std::cout << "Quit signal! Bye Bye :)" << std::endl;
         keepRunning = 0;
         exit(0);
     }
-    void start(){
+
+    void start() {
         signal(SIGINT, Terminal::sigIntHandler); //ctrl + c
         signal(SIGQUIT, Terminal::sigQuitHandler); // ctrl + /
 
-        while(keepRunning){
-            try{
+        while (keepRunning) {
+            try {
                 std::string host;
                 std::string user;
                 std::string dir;
                 try {
                     host = getHost();
-                } catch(UnknownHostException &e) {
+                } catch (UnknownHostException &e) {
                     host = "UnknownHost";
                 }
                 try {
                     user = getUser();
-                } catch(UnknownUserException &e){
+                } catch (UnknownUserException &e) {
                     user = "UnknownUser";
                 }
                 try {
                     dir = getDir();
-                } catch(UnknownPathException &e){
+                } catch (UnknownPathException &e) {
                     dir = "UnknownPath";
                 }
                 std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
-                std::getline(std::cin,terminalInput);
-                auto command =  parser.parseLine(terminalInput);
+                std::getline(std::cin, terminalInput);
+                auto command = parser.parseLine(terminalInput);
                 command.execute();
-                Environment::addOrSet("PWD",dir);
+                Environment::addOrSet("PWD", dir);
             }
-            catch (ExitException & e){
+            catch (ExitException &e) {
                 break;
             }
-            catch (Exception & e){
+            catch (Exception &e) {
                 std::cout << e.What() << std::endl;
             }
-            catch  (std::exception & e){
+            catch (std::exception &e) {
                 std::cout << e.what() << std::endl;
             }
         }
     }
 
-    static Terminal& create(){
+    static Terminal &create() {
         static Terminal terminal;
         return terminal;
     }
 
-    Terminal(const Terminal& ) = delete;
-    Terminal& operator=(Terminal&) = delete;
+    Terminal(const Terminal &) = delete;
+
+    Terminal &operator=(Terminal &) = delete;
 
 private:
-    Terminal() : parser(){
+    Terminal() : parser() {
         chdir(getpwuid(getuid())->pw_dir);
-        Environment::addOrSet("?","0");
-        Environment::addOrSet("PWD",System::getDir());
+        Environment::addOrSet("?", "0");
+        Environment::addOrSet("PWD", System::getDir());
         system("clear");
     }
 
@@ -87,5 +92,6 @@ private:
 
     std::string terminalInput;
 };
+
 int Terminal::keepRunning = 1; //init
 #endif //SHELL_INTERPRETER_TERMINAL_H

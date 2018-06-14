@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-enum CommandType{
+enum CommandType {
     cd_c,
     echo_c,
     exec_c,
@@ -16,19 +16,21 @@ enum CommandType{
     pwd_c
 };
 
-class Command{
+class Command {
 public:
     std::map<std::string, CommandType> map = {
-            std::pair<std::string, CommandType>("cd",cd_c),
-            std::pair<std::string, CommandType>("echo",echo_c),
-            std::pair<std::string, CommandType>("./",exec_c),
-            std::pair<std::string, CommandType>("exit",exit_c),
-            std::pair<std::string, CommandType>("export",exp_c),
-            std::pair<std::string, CommandType>("grep",grep_c),
-            std::pair<std::string, CommandType>("ls",ls_c),
-            std::pair<std::string, CommandType>("mkfifo",mkfifo_c),
-            std::pair<std::string, CommandType>("pwd",pwd_c),
+            std::pair<std::string, CommandType>("cd", cd_c),
+            std::pair<std::string, CommandType>("echo", echo_c),
+            std::pair<std::string, CommandType>("./", exec_c),
+            std::pair<std::string, CommandType>("exit", exit_c),
+            std::pair<std::string, CommandType>("export", exp_c),
+            std::pair<std::string, CommandType>("grep", grep_c),
+            std::pair<std::string, CommandType>("ls", ls_c),
+            std::pair<std::string, CommandType>("mkfifo", mkfifo_c),
+            std::pair<std::string, CommandType>("pwd", pwd_c),
     };
+
     Command() = default;
 };
+
 #endif //SHELL_INTERPRETER_COMMAND_H

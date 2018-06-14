@@ -8,7 +8,9 @@
 
 namespace Environment {
     bool addOrSet(std::string, std::string);
+
     std::string find(std::string);
+
     bool remove(std::string);
 };
 

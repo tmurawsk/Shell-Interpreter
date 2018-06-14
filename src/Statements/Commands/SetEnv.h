@@ -9,23 +9,17 @@ namespace Commands {
     class SetEnv : public Statement {
     public:
         void execute() override {
-//            if(fork() == 0) {
-                if(arguments.size()!=3){
-                    if(arguments.size()>=2 && arguments[1] != "=")
-                        throw UnknownCommandException(arguments[0]);
-                    else if(arguments.size()>=2)
-                        throw InvalidNumberOfParametersException();
-                    else
-                        throw UnknownCommandException(arguments[0]);
-                }
-                if(arguments[1] != "=")
-                    throw InvalidArgumentsException();
-                Environment::addOrSet(arguments[0],arguments[2]);
-//                exit(0);
-//            }
-//            else{
-//                wait(NULL);
-//            }
+            if (arguments.size() != 3) {
+                if (arguments.size() >= 2 && arguments[1] != "=")
+                    throw UnknownCommandException(arguments[0]);
+                else if (arguments.size() >= 2)
+                    throw InvalidNumberOfParametersException();
+                else
+                    throw UnknownCommandException(arguments[0]);
+            }
+            if (arguments[1] != "=")
+                throw InvalidArgumentsException();
+            Environment::addOrSet(arguments[0], arguments[2]);
         };
     };
 }

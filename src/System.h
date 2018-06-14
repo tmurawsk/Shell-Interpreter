@@ -16,22 +16,22 @@ namespace System {
     const static unsigned int maxArgumants = 64;
 
     static std::string getUser() {
-        char * userName = getlogin();
-        if(userName != nullptr)
+        char *userName = getlogin();
+        if (userName != nullptr)
             return std::string(userName);
 
-        struct passwd * user;
+        struct passwd *user;
         user = getpwuid(getuid());
 
-        if(user->pw_name != nullptr)
+        if (user->pw_name != nullptr)
             return std::string(user->pw_name);
 
         throw UnknownUserException();
     }
 
-    static std::string getHost(){
+    static std::string getHost() {
         char hostName[maxNameSize];
-        if(gethostname(hostName,maxNameSize)==0){
+        if (gethostname(hostName, maxNameSize) == 0) {
             hostName[maxNameSize] = 0;
             return std::string(hostName);
         }
@@ -49,7 +49,7 @@ namespace System {
 
     static std::string getDate() {
         time_t currentTime = time(nullptr);
-        struct tm tstr =*localtime(&currentTime);
+        struct tm tstr = *localtime(&currentTime);
         char buffor[maxTimeSize];
         strftime(buffor, maxTimeSize, "%X", &tstr);
         return std::string(buffor);

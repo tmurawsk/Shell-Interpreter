@@ -4,9 +4,9 @@
 #include "../Statement.h"
 
 namespace Commands {
-    class Mkfifo: public Statement {
+    class Mkfifo : public Statement {
     public:
-        void execute() override{
+        void execute() override {
             if (arguments.empty() || arguments.size() > 1)
                 throw InvalidNumberOfParametersException();
 

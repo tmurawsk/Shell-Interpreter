@@ -20,12 +20,11 @@ enum TokenType {
 
 class Token {
 public:
-    explicit Token(TokenType type, const std::string & value ) : type(type), value(value) {}
+    explicit Token(TokenType type, const std::string &value) : type(type), value(value) {}
 
     TokenType type = UNDEFINED;
     std::string value;
 };
-
 
 
 #endif //SHELL_INTERPRETER_TOKEN_H

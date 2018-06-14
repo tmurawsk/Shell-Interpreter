@@ -8,33 +8,27 @@ namespace Commands {
     class Echo : public Statement {
     public:
         void execute() override {
-//            if(fork() == 0) {
-                std::stringstream stream;
+            std::stringstream stream;
 
 //                std::cout<<"echo in file: "<<inFile<<std::endl;
-                if(inFile != ""){
+            if (inFile != "") {
 //                    std::cout<<"in"<<std::endl;
 //                    std::string fn = readFromPipe();
-                    std::string fn = readFromPipe();
+                std::string fn = readFromPipe();
 //                    std::cout<<fn<<std::endl;
-                    arguments.emplace_back(fn);
-                }
+                arguments.emplace_back(fn);
+            }
 
-                for (auto &I : arguments) {
-                    stream << I << " ";
-                }
-                stream << "\n";
+            for (auto &I : arguments) {
+                stream << I << " ";
+            }
+            stream << "\n";
 
-                if(outFile == "")
-                    std::cout << stream.str();
-                else
-                    writeToPipe(stream.str());
+            if (outFile == "")
+                std::cout << stream.str();
+            else
+                writeToPipe(stream.str());
 
-//                exit(0);
-//            }
-//            else{
-//                wait(NULL);
-//            }
         }
     };
 }

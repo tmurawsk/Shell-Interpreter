@@ -9,9 +9,8 @@
 
 namespace Commands {
     class Cd : public Statement {
-        void myImplement(){
-            if(inFile != "")
-//                arguments.emplace_back(readFromPipe());
+        void myImplement() {
+            if (inFile != "")
                 arguments.emplace_back(readFromPipe());
             if (arguments.empty()) {
                 if (chdir(getpwuid(getuid())->pw_dir) < 0)
@@ -22,6 +21,7 @@ namespace Commands {
                 throw NoSuchPathException();
             }
         }
+
     public:
         void execute() override {
             myImplement();

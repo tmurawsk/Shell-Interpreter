@@ -1,6 +1,7 @@
 #include <pwd.h>
 #include "Terminal.h"
-int main(){
+
+int main() {
 
     Terminal::create().start();
 

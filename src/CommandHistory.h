@@ -51,7 +51,7 @@ public:
 
         std::cout << (int) ch;
         //omit last \n
-        if(ch == '\n'){
+        if (ch == '\n') {
             fp.seekg(-2, std::ios::end);
         } else {
             fp.seekg(0, std::ios::end);
@@ -61,7 +61,7 @@ public:
             ch = static_cast<char>(fp.get());
             if ((int) fp.tellg() <= 1) {
                 break;
-            } else if (ch == '\n' ) {
+            } else if (ch == '\n') {
                 break;
             } else {
                 fp.seekg(-2, std::ios_base::cur); //move back
@@ -72,7 +72,7 @@ public:
 
         fp.seekg(-1, std::ios::end); //go back to the end
 
-        std::cout << lastLine <<std::endl;
+        std::cout << lastLine << std::endl;
         return lastLine;
     }
 

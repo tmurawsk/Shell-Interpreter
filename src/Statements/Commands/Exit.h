@@ -8,7 +8,7 @@
 namespace Commands {
     class Exit : public Statement {
     public:
-        void execute() override{
+        void execute() override {
             std::cout << "terminal closed" << std::endl;
             sleep(1);
             system("clear");

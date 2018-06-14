@@ -10,41 +10,38 @@ namespace Commands {
     public:
         void execute() override {
 
-//            if(fork() == 0) {
-                std::string argument = "grep";
-                for (auto &I : arguments) {
-                    argument += " ";
-                    argument += I;
-                }
+            std::string argument = "grep";
+            for (auto &I : arguments) {
+                argument += " ";
+                argument += I;
+            }
 
-                if (inFile != "") {
-//                    arguments.emplace_back(readFromPipe());
-                        arguments.emplace_back(readFromPipe());
-                }
+            if (inFile != "") {
+                arguments.emplace_back(readFromPipe());
+            }
 
-                FILE *cmd;
-                char result[1024];
-                std::string res;
-                cmd = popen(argument.c_str(), "r");
-                if (cmd == nullptr) {
-                    perror("popen");
-                    exit(EXIT_FAILURE);
-                }
-                while (fgets(result, sizeof(result), cmd)) {
-                    res += std::string(result);
-                }
+            FILE *cmd;
+            char result[1024];
+            std::string res;
+            cmd = popen(argument.c_str(), "r");
 
-                if(outFile != "")
-                    writeToPipe(res);
-                else
-                    std::cout << res;
+            if (cmd == nullptr) {
+                perror("popen");
+                exit(EXIT_FAILURE);
+            }
 
-                pclose(cmd);
-                exit(0);
-//            }
-//            else{
-//                wait(NULL);
-//            }
+            while (fgets(result, sizeof(result), cmd)) {
+                res += std::string(result);
+            }
+
+            if (outFile != "")
+                writeToPipe(res);
+            else
+                std::cout << res;
+
+            pclose(cmd);
+            exit(0);
+
         }
     };
 };
