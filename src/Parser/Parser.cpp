@@ -30,7 +30,7 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
             argIndex = 0;
         }
         else
-            throw UnknownCommandException(commandName);
+            throw MissingCommandException();
     }
     else {
         argIndex = 1;
@@ -67,10 +67,8 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
     }
 
     std::vector<std::string> args = refactorArguments(getInputOutput(tokens,ptr),argIndex);
-    for (auto & I : args) {
-//        std::cout<<I<<std::endl;
+    for (auto & I : args)
         ptr->addArgument(I);
-    }
     return ptr;
 }
 

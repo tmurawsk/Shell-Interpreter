@@ -1,7 +1,3 @@
-//
-// Created by dram on 14.06.18.
-//
-
 #ifndef SHELL_INTERPRETER_COMMANDHISTORY_H
 #define SHELL_INTERPRETER_COMMANDHISTORY_H
 

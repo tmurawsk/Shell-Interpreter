@@ -4,9 +4,6 @@
 std::vector<Token> Lexer::getTokens(const std::string & line) {
     auto tokens = readTokens(line);
     tokens = refactorTokens(tokens);
-//    for(auto i :tokens){
-//        std::cout<<i.type <<" "<<i.value<<std::endl;
-//    }
     return tokens;
 }
 
@@ -59,9 +56,6 @@ std::vector<Token> Lexer::readTokens(const std::string & line) {
         }
     }
     addTokenAndClean(tokens,buffer);
-//    for(auto i :tokens){
-//        std::cout<<i.type <<" "<<i.value<<std::endl;
-//    }
     std::cin;
     return tokens;
 }
