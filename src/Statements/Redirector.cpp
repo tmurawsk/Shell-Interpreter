@@ -16,8 +16,11 @@ void Redirector::execute() {
     }
 
     for(int i = 0; i < pipes.size(); i++) {
-        if(fork() == 0)
+        if(fork() == 0) {
             pipes[i]->execute();
+        }
+        else if(i == pipes.size() - 1)
+            wait(NULL);
     }
 }
 

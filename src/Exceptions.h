@@ -122,6 +122,13 @@ public:
         return "Missing command";
     }
 };
+
+class BadFileDescriptorException: public Exception{
+public:
+    std::string What() const noexcept override {
+        return "Bad file descriptor";
+    }
+};
 /*
 class : public Exception{
 public:

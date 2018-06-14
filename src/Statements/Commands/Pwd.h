@@ -14,7 +14,11 @@ namespace Commands {
                 if (!arguments.empty())
                     throw InvalidNumberOfParametersException();
 
-                std::cout << get_current_dir_name() << std::endl;
+                if(outFile == "")
+                    std::cout << get_current_dir_name() << std::endl;
+                else
+                    writeToPipe(get_current_dir_name());
+
                 exit(1);
             }
             else{

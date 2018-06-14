@@ -12,9 +12,11 @@ namespace Commands {
                 std::string tmp = "./";
                 tmp += arguments[0];
                 args[0] = strdup(tmp.c_str());
+
                 for (int i = 1; i < arguments.size(); ++i) {
                     args[i] = strdup(arguments[i].c_str());
                 }
+
                 args[arguments.size()] = NULL;
                 execvp(args[0], args);
                 exit(1);

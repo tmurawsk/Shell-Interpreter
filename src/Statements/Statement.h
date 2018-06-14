@@ -7,12 +7,54 @@
 #include <cstring>
 #include "../Exceptions.h"
 #include <sys/wait.h>
+#include <fcntl.h>
+#include <unistd.h>
+#include <climits>
 
 class Statement {
 protected:
     std::vector<std::string> arguments;
     std::string inFile;
     std::string outFile;
+
+    std::string readFromPipe() {
+        int fd = open(inFile.c_str(), O_RDONLY);
+        if (fd < 0)
+            throw BadFileDescriptorException();
+
+        char array[INT_MAX];
+        read(fd, array, sizeof(array));
+
+        close(fd);
+
+        return std::string(array);
+    }
+
+    void writeToPipe(std::string buffer) {
+        int fd = open(outFile.c_str(), O_WRONLY);
+        if (fd < 0)
+            throw BadFileDescriptorException();
+
+        write(fd, buffer.c_str(), strlen(std::string(buffer).c_str()) + 1);
+
+        close(fd);
+    }
+
+public:
+
+    Statement() = default;
+
+    virtual ~Statement() = default;
+
+    virtual void execute() {};
+
+    void addArgument(const std::string &arg) {
+        arguments.push_back(arg);
+    }
+
+    void setInFile(std::string &file) { inFile = file; }
+
+    void setOutFile(std::string &file) { outFile = file; }
 
     static bool isStringMatchPatern(const std::string &str, const std::string &pattern) {
         //empty patern match to empty string
@@ -50,21 +92,6 @@ protected:
         return helpTable[str.size()][pattern.size()];
 
     }
-
-public:
-    Statement() = default;
-
-    virtual ~Statement() = default;
-
-    virtual void execute(){};
-    void addArgument(const std::string &arg) {
-        arguments.push_back(arg);
-    }
-
-    void setInFile(std::string & file){inFile = file;}
-    void setOoutFile(std::string& file){outFile = file;}
-
-
 };
 
 #endif //SHELL_INTERPRETER_STATEMENT_H
