@@ -13,15 +13,6 @@ protected:
     std::vector<std::string> arguments;
     std::string inFile;
     std::string outFile;
-public:
-    Statement() = default;
-
-    virtual ~Statement() = default;
-
-    virtual void execute(){};
-    void addArgument(const std::string &arg) {
-        arguments.push_back(arg);
-    }
 
     static bool isStringMatchPatern(const std::string &str, const std::string &pattern){
         //empty patern match to empty string
@@ -59,6 +50,21 @@ public:
         return helpTable[str.size()][pattern.size()];
 
     }
+
+public:
+    Statement() = default;
+
+    virtual ~Statement() = default;
+
+    virtual void execute(){};
+    void addArgument(const std::string &arg) {
+        arguments.push_back(arg);
+    }
+
+    void setInFile(std::string & file){inFile = file;}
+    void setOoutFile(std::string& file){outFile = file;}
+
+
 };
 
 #endif //SHELL_INTERPRETER_STATEMENT_H

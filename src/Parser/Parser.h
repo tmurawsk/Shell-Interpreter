@@ -33,12 +33,14 @@ public:
 
 private:
     Lexer lexer;
+    const std::vector<std::vector<Token> > pipeSeparator(const std::vector<Token> &);
+
     std::shared_ptr<Statement> parseCommand( const std::vector<Token> & tokens);
     std::vector<std::string> refactorArguments(const std::vector<Token> &, int);
-
-    std::string getEnv(std::vector<Token>,int&);
-    std::string getQuote(std::vector<Token>,int&);
-    std::string getDoubleQuote(std::vector<Token>,int&);
+//
+//    std::string getEnv(std::vector<Token>,int&);
+//    std::string getQuote(std::vector<Token>,int&);
+//    std::string getDoubleQuote(std::vector<Token>,int&);
 };
 
 

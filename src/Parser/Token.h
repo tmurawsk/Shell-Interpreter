@@ -12,6 +12,7 @@ enum TokenType {
     ASSIGNMENT,
     ENV,
     SPACE,
+    EXEC,
     QUOTE,
     DOUBLE_QUOTE,
     UNDEFINED

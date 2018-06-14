@@ -95,11 +95,38 @@ public:
         return "Invalid arguments";
     }
 };
+
+class TooManyPipesException: public Exception{
+private:
+    int maxNum;
+    int curNum;
+
+public:
+
+    TooManyPipesException(int max,int cur):maxNum(max), curNum(cur){}
+
+    std::string What() const noexcept override {
+        std::string msg;
+        msg += "Too many pipes. Maximum number is ";
+        msg += std::to_string(maxNum);
+        msg += " and currently there are ";
+        msg += std::to_string(curNum);
+        msg += ".";
+        return msg;
+    }
+};
+
+class MissingCommandException: public Exception{
+public:
+    std::string What() const noexcept override {
+        return "Missing command";
+    }
+};
 /*
 class : public Exception{
 public:
 
-    std::string what() const noexcept override {
+    std::string What() const noexcept override {
         return "";
     }
 };
