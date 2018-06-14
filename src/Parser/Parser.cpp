@@ -105,12 +105,12 @@ const std::vector<std::vector<Token> > Parser::pipeSeparator(const std::vector<T
         singleFunction.clear();
     }
 
-    for(auto &i : result) {
-
-        for(auto &j : i)
-            std::cout << j.value << " ";
-        std::cout << " | ";
-    }
+//    for(auto &i : result) {
+//
+//        for(auto &j : i)
+//            std::cout << j.value << " ";
+//        std::cout << " | ";
+//    }
 
     return result;
 }
