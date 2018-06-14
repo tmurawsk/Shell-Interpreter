@@ -78,7 +78,6 @@ private:
     Terminal() : parser(){
         chdir(getpwuid(getuid())->pw_dir);
         Environment::addOrSet("?","0");
-        Environment::addOrSet("a","a b");
         Environment::addOrSet("PWD",System::getDir());
         system("clear");
     }

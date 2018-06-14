@@ -114,8 +114,12 @@ std::vector<Token> Lexer::refactorTokens(const std::vector<Token> &args) {
                 break;
             case env_s:
                 str = getEnv(args,i);
+                if (!buffer.empty()){
+                    result.emplace_back(TokenType::STRING,buffer);
+                    buffer = "";
+                }
                 for( auto & I : str)
-                    buffer += I;
+                    result.emplace_back(TokenType::STRING,I);
                 state = argument_s;
                 break;
             case quote_s:
