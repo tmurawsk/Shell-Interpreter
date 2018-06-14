@@ -14,7 +14,7 @@ protected:
     std::string inFile;
     std::string outFile;
 
-    static bool isStringMatchPatern(const std::string &str, const std::string &pattern){
+    static bool isStringMatchPatern(const std::string &str, const std::string &pattern) {
         //empty patern match to empty string
         if (str.empty())
             return pattern.empty();
@@ -41,7 +41,7 @@ protected:
                 // * matches in character in input
                 if (pattern[j - 1] == '*')
                     helpTable[i][j] = helpTable[i][j - 1] || helpTable[i - 1][j];
-                else if (pattern[j-1] == '?' || str[i - 1] == pattern[j - 1]) { // characters match, or '?'
+                else if (pattern[j - 1] == '?' || str[i - 1] == pattern[j - 1]) { // characters match, or '?'
                     helpTable[i][j] = helpTable[i - 1][j - 1];
                 } else // characters dont match
                     helpTable[i][j] = false;
