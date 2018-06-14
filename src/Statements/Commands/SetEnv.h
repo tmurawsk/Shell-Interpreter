@@ -2,6 +2,7 @@
 #define SHELL_INTERPRETER_SETENV_H
 
 #include "../Statement.h"
+#include "../../Environment.h"
 #include "../../Exceptions.h"
 
 namespace Commands {

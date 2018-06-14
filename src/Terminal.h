@@ -77,8 +77,9 @@ public:
 private:
     Terminal() : parser(){
         chdir(getpwuid(getuid())->pw_dir);
-        setenv("?","0",0);
-        setenv("PWD",getenv("HOME"),0);
+        Environment::addOrSet("?","0");
+        Environment::addOrSet("a","a b");
+        Environment::addOrSet("PWD",System::getDir());
         system("clear");
     }
 

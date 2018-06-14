@@ -2,6 +2,7 @@
 #define SHELL_INTERPRETER_EXP_H
 
 #include "../Statement.h"
+#include "../../Environment.h"
 #include <unistd.h>
 
 namespace Commands {

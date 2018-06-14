@@ -56,7 +56,7 @@ std::vector<Token> Lexer::readTokens(const std::string & line) {
         }
     }
     addTokenAndClean(tokens,buffer);
-    std::cin;
+//    std::cin;
     return tokens;
 }
 
