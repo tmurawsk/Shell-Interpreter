@@ -13,17 +13,27 @@ protected:
     std::vector<std::string> arguments;
     std::string inFile;
     std::string outFile;
+
 public:
     Statement() = default;
 
     virtual ~Statement() = default;
 
-    virtual void execute(){};
+    void setInFile(const std::string &inFile) {
+        Statement::inFile = inFile;
+    }
+
+    void setOutFile(const std::string &outFile) {
+        Statement::outFile = outFile;
+    }
+
+    virtual void execute() {};
+
     void addArgument(const std::string &arg) {
         arguments.push_back(arg);
     }
 
-    static bool isStringMatchPatern(const std::string &str, const std::string &pattern){
+    static bool isStringMatchPatern(const std::string &str, const std::string &pattern) {
         //empty patern match to empty string
         if (str.empty())
             return pattern.empty();
@@ -50,7 +60,7 @@ public:
                 // * matches in character in input
                 if (pattern[j - 1] == '*')
                     helpTable[i][j] = helpTable[i][j - 1] || helpTable[i - 1][j];
-                else if (pattern[j-1] == '?' || str[i - 1] == pattern[j - 1]) { // characters match, or '?'
+                else if (pattern[j - 1] == '?' || str[i - 1] == pattern[j - 1]) { // characters match, or '?'
                     helpTable[i][j] = helpTable[i - 1][j - 1];
                 } else // characters dont match
                     helpTable[i][j] = false;
