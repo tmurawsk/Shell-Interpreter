@@ -52,8 +52,7 @@ public:
                 std::cout << "[" << getDate() << "]" << getUser() << "@" << getHost() << ":" << getDir() << ">";
                 std::getline(std::cin,terminalInput);
                 auto command =  parser.parseLine(terminalInput);
-//                command->execute();
-                    command.execute();
+                command.execute();
             }
             catch (ExitException & e){
                 break;
@@ -78,6 +77,8 @@ public:
 private:
     Terminal() : parser(){
         chdir(getpwuid(getuid())->pw_dir);
+        setenv("?","0",0);
+        setenv("PWD",getenv("HOME"),0);
         system("clear");
     }
 

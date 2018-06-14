@@ -24,13 +24,8 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
     std::shared_ptr<Statement> ptr;
 
     if(comm == command.map.end()) {
-        char * env = getenv(commandName.c_str());
-        if(env) {
-            ptr = std::make_shared<SetEnv>();
-            argIndex = 0;
-        }
-        else
-            throw MissingCommandException();
+        ptr = std::make_shared<SetEnv>();
+        argIndex = 0;
     }
     else {
         argIndex = 1;

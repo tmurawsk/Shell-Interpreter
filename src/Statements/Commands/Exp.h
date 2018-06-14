@@ -9,12 +9,11 @@ namespace Commands {
     public:
         void execute() override{
             if(fork() == 0) {
-                std::cout << "export: ";        // TODO
-                for(auto & I : arguments){
-                    std::cout << I << " ";
-                }
-                std::cout << "\n";
-                exit(1);
+                if(arguments.size()!=3)
+                    throw InvalidNumberOfParametersException();
+                if(arguments[1] != "=")
+                    throw InvalidArgumentsException();
+                Environment::addOrSet(arguments[0],arguments[2]);
             }
             else{
                 wait(NULL);
