@@ -23,20 +23,30 @@ namespace Commands {
                     arguments.emplace_back(readFromPipe());
                 }
 
+//                std::cout<<"size: "<<arguments.size()<<std::endl;
+                for(auto i : arguments)
+//                    std::cout<<"arg: "<<i<<std::endl;
+
+
                 if (arguments.size() > 4) {
                     throw InvalidNumberOfParametersException();
                 }
 
                 for (int i = 0; i < arguments.size() && !arguments.empty(); i++) {
                     if (arguments[i][0] != '-') {
+//                        std::cout<<"in1"<<std::endl;
                         if (i < arguments.size() - 1)
                             throw InvalidArgumentsException();
                         else
                             break;
                     } else if (arguments[i].size() < 2) {
+//                        std::cout<<"in2"<<std::endl;
                         throw InvalidArgumentsException();
                     } else {
+//                        std::cout<<"in3"<<std::endl;
+//                        std::cout<<"argsize:"<<arguments[i].size()<<std::endl;
                         for (int j = 1; j < arguments[i].size(); j++) {
+//                            std::cout<<":"<<arguments[i][j]<<std::endl;
                             if (arguments[i][j] == 'l')
                                 l_flag = true;
                             else if (arguments[i][j] == 'a')

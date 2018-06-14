@@ -41,6 +41,8 @@ std::string readFromPipe(){
         close(fd);
         auto result = std::string(array);
         delete []array;
+        result.erase(--result.end());
+        result.erase(--result.end());
 //        std::cout<<"end read"<<std::endl;
         return result;
     };
@@ -51,7 +53,7 @@ std::string readFromPipe(){
         int fd = open(outFile.c_str(), O_WRONLY);
         if (fd < 0)
             throw BadFileDescriptorException();
-        write(fd, buffer.c_str(), buffer.size() );
+        write(fd, buffer.c_str(), buffer.size());
 //        std::cout<<"end write"<<std::endl;
         close(fd);
     }
