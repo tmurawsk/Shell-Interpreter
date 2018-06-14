@@ -5,13 +5,14 @@
 #include <unistd.h>
 #include "../Statement.h"
 #include "../../Exceptions.h"
+#include "../../System.h"
 
 namespace Commands {
     class Cd : public Statement {
         void myImplement(){
             if(inFile != "")
+//                arguments.emplace_back(readFromPipe());
                 arguments.emplace_back(readFromPipe());
-
             if (arguments.empty()) {
                 if (chdir(getpwuid(getuid())->pw_dir) < 0)
                     throw NoSuchPathException();

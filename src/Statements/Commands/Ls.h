@@ -15,10 +15,11 @@ namespace Commands {
     class Ls : public Statement {
     public:
         void execute() override {
-            if (fork() == 0) {
+//            if (fork() == 0) {
                 bool l_flag = false, i_flag = false, a_flag = false;
 
                 if (inFile != "") {
+//                    arguments.emplace_back(readFromPipe());
                     arguments.emplace_back(readFromPipe());
                 }
 
@@ -137,16 +138,18 @@ namespace Commands {
                 std::stringstream output;
                 output << "total: " << fileCounter << "\n" << files.str();
 
+//                std::cout<<"ls out file: "<<outFile<<std::endl;
                 if(outFile == "") {
                     std::cout << output.str() << std::endl;
                 } else {
+//                    std::cout<<"out"<<std::endl;
                     writeToPipe(output.str());
                 }
 
-                exit(1);
-            } else {
-                wait(NULL);
-            }
+//                exit(0);
+//            } else {
+//                wait(NULL);
+//            }
         }
 
     private:

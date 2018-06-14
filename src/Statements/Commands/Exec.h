@@ -7,7 +7,7 @@ namespace Commands {
     class Exec : public Statement {
     public:
         void execute() override {
-            if (fork() == 0) {
+//            if (fork() == 0) {
                 char *args[arguments.size() + 1];
                 std::string tmp = "./";
                 tmp += arguments[0];
@@ -19,10 +19,10 @@ namespace Commands {
 
                 args[arguments.size()] = NULL;
                 execvp(args[0], args);
-                exit(1);
-            } else {
-                wait(NULL);
-            }
+//                exit(0);
+//            } else {
+//                wait(NULL);
+//            }
         }
     };
 }

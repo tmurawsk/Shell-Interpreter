@@ -10,7 +10,7 @@ namespace Commands {
     class Pwd : public Statement {
     public:
         void execute() override {
-            if(fork() == 0) {
+//            if(fork() == 0) {
                 if (!arguments.empty())
                     throw InvalidNumberOfParametersException();
 
@@ -19,11 +19,11 @@ namespace Commands {
                 else
                     writeToPipe(get_current_dir_name());
 
-                exit(1);
-            }
-            else{
-                wait(NULL);
-            }
+//                exit(0);
+//            }
+//            else{
+//                wait(NULL);
+//            }
         }
     };
 }

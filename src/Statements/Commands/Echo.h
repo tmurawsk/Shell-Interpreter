@@ -8,11 +8,17 @@ namespace Commands {
     class Echo : public Statement {
     public:
         void execute() override {
-            if(fork() == 0) {
+//            if(fork() == 0) {
                 std::stringstream stream;
 
-                if(inFile != "")
-                    arguments.emplace_back(readFromPipe());
+//                std::cout<<"echo in file: "<<inFile<<std::endl;
+                if(inFile != ""){
+//                    std::cout<<"in"<<std::endl;
+//                    std::string fn = readFromPipe();
+                    std::string fn = readFromPipe();
+//                    std::cout<<fn<<std::endl;
+                    arguments.emplace_back(fn);
+                }
 
                 for (auto &I : arguments) {
                     stream << I << " ";
@@ -24,11 +30,11 @@ namespace Commands {
                 else
                     writeToPipe(stream.str());
 
-                exit(1);
-            }
-            else{
-                wait(NULL);
-            }
+//                exit(0);
+//            }
+//            else{
+//                wait(NULL);
+//            }
         }
     };
 }

@@ -10,7 +10,7 @@ namespace Commands {
     public:
         void execute() override {
 
-            if(fork() == 0) {
+//            if(fork() == 0) {
                 std::string argument = "grep";
                 for (auto &I : arguments) {
                     argument += " ";
@@ -18,7 +18,8 @@ namespace Commands {
                 }
 
                 if (inFile != "") {
-                    arguments.emplace_back(readFromPipe());
+//                    arguments.emplace_back(readFromPipe());
+                        arguments.emplace_back(readFromPipe());
                 }
 
                 FILE *cmd;
@@ -39,11 +40,11 @@ namespace Commands {
                     std::cout << res;
 
                 pclose(cmd);
-                exit(1);
-            }
-            else{
-                wait(NULL);
-            }
+                exit(0);
+//            }
+//            else{
+//                wait(NULL);
+//            }
         }
     };
 };

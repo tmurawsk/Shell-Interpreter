@@ -53,6 +53,7 @@ public:
                 std::getline(std::cin,terminalInput);
                 auto command =  parser.parseLine(terminalInput);
                 command.execute();
+                Environment::addOrSet("PWD",dir);
             }
             catch (ExitException & e){
                 break;

@@ -17,32 +17,48 @@ protected:
     std::string inFile;
     std::string outFile;
 
-    std::string readFromPipe() {
+//    std::string readFromPipe() {
+//        std::cout<<"read"<<std::endl;
+//        int fd = open(inFile.c_str(), O_RDONLY);
+//        if (fd < 0)
+//            throw BadFileDescriptorException();
+//
+//        char array[INT_MAX];
+//        read(fd, array, sizeof(array));
+//
+//        close(fd);
+//
+//        return std::string(array);
+//    }
+std::string readFromPipe(){
+//    std::cout<<"read"<<std::endl;
         int fd = open(inFile.c_str(), O_RDONLY);
         if (fd < 0)
             throw BadFileDescriptorException();
-
-        char array[INT_MAX];
-        read(fd, array, sizeof(array));
-
+        char * array = new char[INT_MAX];
+        ssize_t r = read(fd, array, INT_MAX);
+//        std::cout<<"get: "<<(int)r<<std::endl;
         close(fd);
-
-        return std::string(array);
-    }
+        auto result = std::string(array);
+        delete []array;
+//        std::cout<<"end read"<<std::endl;
+        return result;
+    };
 
     void writeToPipe(std::string buffer) {
+//        std::cout<<"buf: "<<buffer<<" size: "<<buffer.size()<<std::endl;
+//        std::cout<<"write"<<std::endl;
         int fd = open(outFile.c_str(), O_WRONLY);
         if (fd < 0)
             throw BadFileDescriptorException();
-
-        write(fd, buffer.c_str(), strlen(std::string(buffer).c_str()) + 1);
-
+        write(fd, buffer.c_str(), buffer.size() );
+//        std::cout<<"end write"<<std::endl;
         close(fd);
     }
 
 public:
 
-    Statement() = default;
+    explicit Statement() = default;
 
     virtual ~Statement() = default;
 
