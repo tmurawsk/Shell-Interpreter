@@ -68,7 +68,7 @@ std::shared_ptr<Statement> Parser::parseCommand(const std::vector<Token> &tokens
 
     std::vector<std::string> args = refactorArguments(getInputOutput(tokens,ptr),argIndex);
     for (auto & I : args) {
-        std::cout<<I<<std::endl;
+//        std::cout<<I<<std::endl;
         ptr->addArgument(I);
     }
     return ptr;
