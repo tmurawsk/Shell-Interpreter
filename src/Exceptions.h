@@ -123,11 +123,10 @@ public:
     }
 };
 
-class MissingFileNameException: public Exception{
+class BadFileDescriptorException: public Exception{
 public:
-
     std::string What() const noexcept override {
-        return "Missing file";
+        return "Bad file descriptor";
     }
 };
 /*

@@ -18,6 +18,10 @@ namespace Commands {
             if (fork() == 0) {
                 bool l_flag = false, i_flag = false, a_flag = false;
 
+                if (inFile != "") {
+                    arguments.emplace_back(readFromPipe());
+                }
+
                 if (arguments.size() > 4) {
                     throw InvalidNumberOfParametersException();
                 }
@@ -54,7 +58,7 @@ namespace Commands {
                 std::string filePattern;
 
                 path = arguments.empty() || arguments[arguments.size() - 1][0] == '-' ?
-                    "." : arguments[arguments.size() - 1];
+                       "." : arguments[arguments.size() - 1];
 
                 std::string currDir = get_current_dir_name();
 
@@ -76,7 +80,7 @@ namespace Commands {
 
                             struct stat ret;
                             if ((stat((currDir + '/' + path + '/' + std::string(ent->d_name)).c_str(),
-                                    &ret)) == -1) {
+                                      &ret)) == -1) {
 //                            throw InvalidArgumentsException();
                                 continue;
                             }
@@ -133,7 +137,13 @@ namespace Commands {
                 std::stringstream output;
                 output << "total: " << fileCounter << "\n" << files.str();
 
-                std::cout << output.str() << std::endl;
+                if(outFile == "") {
+                    std::cout << output.str() << std::endl;
+                } else {
+                    writeToPipe(output.str());
+                }
+
+                exit(1);
             } else {
                 wait(NULL);
             }

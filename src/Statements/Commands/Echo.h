@@ -1,6 +1,7 @@
 #ifndef SHELL_INTERPRETER_ECHO_H
 #define SHELL_INTERPRETER_ECHO_H
 
+#include <sstream>
 #include "../Statement.h"
 
 namespace Commands {
@@ -8,10 +9,21 @@ namespace Commands {
     public:
         void execute() override {
             if(fork() == 0) {
+                std::stringstream stream;
+
+                if(inFile != "")
+                    arguments.emplace_back(readFromPipe());
+
                 for (auto &I : arguments) {
-                    std::cout << I << " ";
+                    stream << I << " ";
                 }
-                std::cout << "\n";
+                stream << "\n";
+
+                if(outFile == "")
+                    std::cout << stream.str();
+                else
+                    writeToPipe(stream.str());
+
                 exit(1);
             }
             else{
