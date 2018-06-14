@@ -11,6 +11,8 @@
 #include <unistd.h>
 #include <climits>
 
+#define MAX_BUFFER 1*1000*1000
+
 class Statement {
 protected:
     std::vector<std::string> arguments;
@@ -23,15 +25,15 @@ protected:
         if (fd < 0)
             throw BadFileDescriptorException();
 
-        char *array = new char[1024];
-        ssize_t r = read(fd, array, 1024);
-//        std::cout<<"get: "<<(int)r<<std::endl;
+        char *array = new char[MAX_BUFFER];
+        ssize_t r = read(fd, array, MAX_BUFFER);
         close(fd);
+
         auto result = std::string(array);
         delete[]array;
         result.erase(--result.end());
         result.erase(--result.end());
-//        std::cout<<"end read"<<std::endl;
+
         return result;
     };
 
