@@ -35,6 +35,8 @@ namespace Commands {
 
                 if(outFile != "")
                     writeToPipe(res);
+                else
+                    std::cout << res;
 
                 pclose(cmd);
                 exit(1);

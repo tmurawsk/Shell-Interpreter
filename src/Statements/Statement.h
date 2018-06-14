@@ -52,9 +52,9 @@ public:
         arguments.push_back(arg);
     }
 
-    void setInFile(std::string &file) { inFile = file; }
+    void setInFile(const std::string &file) { inFile = file; }
 
-    void setOutFile(std::string &file) { outFile = file; }
+    void setOutFile(const std::string &file) { outFile = file; }
 
     static bool isStringMatchPatern(const std::string &str, const std::string &pattern) {
         //empty patern match to empty string
