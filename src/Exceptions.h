@@ -4,12 +4,12 @@
 #include <exception>
 #include <string>
 
-class Exception : std::exception{
+class Exception : std::exception {
 public:
-    virtual std::string What() const noexcept{}
+    virtual std::string What() const noexcept {}
 };
 
-class ExitException : public Exception{
+class ExitException : public Exception {
 public:
     std::string What() const noexcept override {
         return "Terminal closed";
@@ -17,11 +17,12 @@ public:
 };
 
 
-class UnknownCommandException: public Exception{
+class UnknownCommandException : public Exception {
 private:
     std::string command;
 public:
-    explicit UnknownCommandException(std::string & command_):command(command_){}
+    explicit UnknownCommandException(std::string &command_) : command(command_) {}
+
     std::string What() const noexcept override {
 
         return "Unknown command: " + command;
@@ -52,22 +53,23 @@ public:
     }
 };
 
-class MissingSignException: public Exception{
+class MissingSignException : public Exception {
     char c;
 public:
-    explicit MissingSignException(char c_):c(c_){}
+    explicit MissingSignException(char c_) : c(c_) {}
+
     std::string What() const noexcept override {
         std::string result = "Missing ";
-        result +=c;
+        result += c;
         return result;
     }
 };
 
-class UnknownVariableException: public Exception{
+class UnknownVariableException : public Exception {
 private:
     std::string name;
 public:
-    explicit UnknownVariableException(std::string& name_):name(name_){}
+    explicit UnknownVariableException(std::string &name_) : name(name_) {}
 
     std::string What() const noexcept override {
         return "Undefined variable " + name;
@@ -81,6 +83,7 @@ public:
         return "Invalid arguments";
     }
 };
+
 class UnknownHostException : public Exception {
 public:
 
@@ -88,6 +91,7 @@ public:
         return "Invalid arguments";
     }
 };
+
 class UnknownPathException : public Exception {
 public:
 
@@ -96,14 +100,14 @@ public:
     }
 };
 
-class TooManyPipesException: public Exception{
+class TooManyPipesException : public Exception {
 private:
     int maxNum;
     int curNum;
 
 public:
 
-    TooManyPipesException(int max,int cur):maxNum(max), curNum(cur){}
+    TooManyPipesException(int max, int cur) : maxNum(max), curNum(cur) {}
 
     std::string What() const noexcept override {
         std::string msg;
@@ -116,14 +120,21 @@ public:
     }
 };
 
-class MissingCommandException: public Exception{
+class MissingCommandException : public Exception {
 public:
     std::string What() const noexcept override {
         return "Missing command";
     }
 };
 
-class MissingFileNameException: public Exception{
+class BadFileDescriptorException : public Exception {
+public:
+    std::string What() const noexcept override {
+        return "Bad file descriptor";
+    }
+};
+
+class MissingFileNameException : public Exception {
 public:
 
     std::string What() const noexcept override {

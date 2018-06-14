@@ -92,17 +92,26 @@ const std::vector<std::vector<Token> > Parser::pipeSeparator(const std::vector<T
     std::vector<std::vector<Token> > result;
     std::vector<Token> singleFunction;
 
-    for(auto & I : pipes){
+    for(auto & I : pipes) {
         int i = I + 1;
-        while(i < tokens.size() && tokens[i].type!=TokenType::PIPE){
+        while (i < tokens.size() && tokens[i].type != TokenType::PIPE) {
             singleFunction.push_back(tokens[i]);
             ++i;
         }
-        if(singleFunction.empty())
+        if (singleFunction.empty())
             throw MissingCommandException();
         result.push_back(singleFunction);
+
         singleFunction.clear();
     }
+
+    for(auto &i : result) {
+
+        for(auto &j : i)
+            std::cout << j.value << " ";
+        std::cout << " | ";
+    }
+
     return result;
 }
 

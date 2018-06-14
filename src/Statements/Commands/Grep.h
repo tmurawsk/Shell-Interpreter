@@ -16,16 +16,28 @@ namespace Commands {
                     argument += " ";
                     argument += I;
                 }
+
+                if (inFile != "") {
+                    arguments.emplace_back(readFromPipe());
+                }
+
                 FILE *cmd;
                 char result[1024];
+                std::string res;
                 cmd = popen(argument.c_str(), "r");
                 if (cmd == nullptr) {
                     perror("popen");
                     exit(EXIT_FAILURE);
                 }
                 while (fgets(result, sizeof(result), cmd)) {
-                    printf("%s", result);
+                    res += std::string(result);
                 }
+
+                if(outFile != "")
+                    writeToPipe(res);
+                else
+                    std::cout << res;
+
                 pclose(cmd);
                 exit(1);
             }
