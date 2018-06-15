@@ -11,7 +11,7 @@
 #include <unistd.h>
 #include <climits>
 
-#define MAX_BUFFER 1*1000*1000
+#define MAX_BUFFER 1000*1000
 
 class Statement {
 protected:
@@ -20,7 +20,6 @@ protected:
     std::string outFile;
 
     std::string readFromPipe() {
-//    std::cout<<"read"<<std::endl;
         int fd = open(inFile.c_str(), O_RDONLY);
         if (fd < 0)
             throw BadFileDescriptorException();
@@ -38,13 +37,10 @@ protected:
     };
 
     void writeToPipe(std::string buffer) {
-//        std::cout<<"buf: "<<buffer<<" size: "<<buffer.size()<<std::endl;
-//        std::cout<<"write"<<std::endl;
         int fd = open(outFile.c_str(), O_WRONLY);
         if (fd < 0)
             throw BadFileDescriptorException();
         write(fd, buffer.c_str(), buffer.size());
-//        std::cout<<"end write"<<std::endl;
         close(fd);
     }
 
